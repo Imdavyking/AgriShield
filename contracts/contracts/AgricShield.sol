@@ -529,6 +529,10 @@ contract AgriShield is Ownable, ReentrancyGuard {
         }
 
         uint256 planId = generateUniqueId();
+
+        if (insurancePlans[planId].id != 0) {
+            revert AgriShield__PolicyAlreadyExists();
+        }
         InsurancePlan memory newPlan = InsurancePlan({
             id: planId,
             region: _region,
