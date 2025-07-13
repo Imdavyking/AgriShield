@@ -3,9 +3,9 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const AgricShieldModule = buildModule("AgricShieldModule", (m) => {
-  const agricShield = m.contract("AgricShield", []);
-  return { agricShield };
+const AgriShieldModule = buildModule("AgriShieldModule", (m) => {
+  const agriShield = m.contract("AgriShield", []);
+  return { agriShield };
 });
 
-export default AgricShieldModule;
+export default AgriShieldModule;

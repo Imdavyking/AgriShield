@@ -4,8 +4,7 @@ import dotenv from "dotenv";
 import { network } from "hardhat";
 import { cleanDeployments } from "../utils/clean";
 import { updateEnv } from "./update.env";
-import FlightModule from "../ignition/modules/AgricShield";
-
+import AgriShieldModule from "../ignition/modules/AgricShield";
 import { copyABI } from "./copy.abi";
 import HelpersModule from "../ignition/modules/Helpers";
 import USDCModule from "../ignition/modules/USDC";
@@ -17,24 +16,24 @@ async function main() {
   const rpcUrl = (network.config as any).url;
   cleanDeployments(chainId!);
   const blockNumber = await hre.ethers.provider.getBlockNumber();
-  const { flightTicket } = await hre.ignition.deploy(FlightModule);
+  const { agriShield } = await hre.ignition.deploy(AgriShieldModule);
   const { helpers } = await hre.ignition.deploy(HelpersModule);
   const { usdc } = await hre.ignition.deploy(USDCModule);
-  await flightTicket.waitForDeployment();
+  await agriShield.waitForDeployment();
   await helpers.waitForDeployment();
   await usdc.waitForDeployment();
-  const flightTicketAddress = await flightTicket.getAddress();
+  const agriShieldAddress = await agriShield.getAddress();
   const helpersAddress = await helpers.getAddress();
   const usdcAddress = await usdc.getAddress();
 
-  console.log("FlightTicket deployed to:", flightTicketAddress);
+  console.log("AgriShield deployed to:", agriShieldAddress);
   console.log("Helpers deployed to:", helpersAddress);
   console.log("USDC deployed to:", usdcAddress);
 
   // set url
   const flightContract = await hre.ethers.getContractAt(
     "FlightTicket",
-    flightTicketAddress
+    agriShieldAddress
   );
 
   const tx = await flightContract.setHostName(process.env.BACKEND_URL!);
@@ -61,24 +60,24 @@ async function main() {
   );
   await setUSDCSepolia.wait(1);
 
-  await verify(flightTicketAddress, []);
+  await verify(agriShieldAddress, []);
   await verify(helpersAddress, []);
   await verify(usdcAddress, []);
 
   updateEnv(
-    flightTicketAddress,
+    agriShieldAddress,
     "frontend",
-    "VITE_FLIGHT_TICKET_CONTRACT_ADDRESS"
+    "VITE_AGRIC_SHIELD_CONTRACT_ADDRESS"
   );
-  updateEnv(flightTicketAddress, "backend", "FLIGHT_TICKET_CONTRACT_ADDRESS");
-  updateEnv(flightTicketAddress, "indexer", "FLIGHT_TICKET_CONTRACT_ADDRESS");
+  updateEnv(agriShieldAddress, "backend", "AGRIC_SHIELD_CONTRACT_ADDRESS");
+  updateEnv(agriShieldAddress, "indexer", "AGRIC_SHIELD_CONTRACT_ADDRESS");
   updateEnv(helpersAddress, "frontend", "VITE_FDC_HELPER_ADDRESS");
   updateEnv(blockNumber.toString(), "indexer", "BLOCK_NUMBER");
   updateEnv(chainId!.toString()!, "indexer", "CHAIN_ID");
   updateEnv(rpcUrl, "indexer", "RPC_URL");
   updateEnv(rpcUrl, "backend", "RPC_URL");
-  copyABI("FlightTicket", "indexer/abis", "flight-ticket");
-  copyABI("FlightTicket", "frontend/src/assets/json", "flight-ticket");
+  copyABI("AgriShield", "indexer/abis", "agrishield");
+  copyABI("AgriShield", "frontend/src/assets/json", "agrishield");
   copyABI("Helpers", "frontend/src/assets/json", "helpers-fdc");
   copyABI("USDC", "frontend/src/assets/json", "erc20");
 }

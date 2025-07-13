@@ -397,6 +397,10 @@ contract AgriShield is Ownable, ReentrancyGuard {
 
         // Create a policy
         uint256 policyId = generateUniqueId();
+        if (policies[policyId].policyId != 0) {
+            revert AgriShield__PolicyAlreadyExists();
+        }
+
         Policy memory newPolicy = Policy({
             policyId: policyId,
             planId: planId,

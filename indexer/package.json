@@ -1,7 +1,7 @@
 {
   "name": "subql-starter",
   "version": "0.0.1",
-  "description": "AgricShield is a decentralized platform",
+  "description": "AgriShield is a decentralized platform",
   "main": "dist/index.js",
   "scripts": {
     "build": "subql codegen && subql build",
