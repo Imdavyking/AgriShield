@@ -12,7 +12,6 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {IEVMTransaction} from "@flarenetwork/flare-periphery-contracts/coston2/IEVMTransaction.sol";
 import {IFdcVerification} from "@flarenetwork/flare-periphery-contracts/coston2/IFdcVerification.sol";
 import {USDC} from "./USDC.sol";
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
 
 /**
@@ -25,7 +24,6 @@ contract AgriShield is Ownable, ReentrancyGuard {
     using Strings for uint256;
     RandomNumberV2Interface internal randomV2;
     TestFtsoV2Interface internal ftsoV2;
-    AggregatorV3Interface private s_priceFeed;
     using PriceConverter for uint256;
 
     error AgriShield__IncorrectETHAmount();
@@ -147,9 +145,6 @@ contract AgriShield is Ownable, ReentrancyGuard {
     event TokenRemoved(address token);
 
     constructor() {
-        s_priceFeed = AggregatorV3Interface(
-            0x694AA1769357215DE4FAC081bf1f309aDC325306
-        ); // ETH/USD on sepolia
         randomV2 = ContractRegistry.getRandomNumberV2();
         ftsoV2 = ContractRegistry.getTestFtsoV2();
         tokenToFeedId[NATIVE_TOKEN] = FLRUSD;
