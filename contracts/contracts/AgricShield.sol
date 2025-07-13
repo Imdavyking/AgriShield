@@ -7,7 +7,7 @@ import {TestFtsoV2Interface} from "@flarenetwork/flare-periphery-contracts/costo
 import {IJsonApi} from "@flarenetwork/flare-periphery-contracts/coston2/IJsonApi.sol";
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {IEVMTransaction} from "@flarenetwork/flare-periphery-contracts/coston2/IEVMTransaction.sol";
 import {IFdcVerification} from "@flarenetwork/flare-periphery-contracts/coston2/IFdcVerification.sol";
@@ -23,8 +23,6 @@ contract AgriShield is Ownable, ReentrancyGuard {
     using Strings for uint256;
     RandomNumberV2Interface internal randomV2;
     TestFtsoV2Interface internal ftsoV2;
-    using PriceConverter for uint256;
-
     error AgriShield__IncorrectETHAmount();
     error AgriShield__SendingFailed();
     error AgriShield__TokenNotSupported(address token);
@@ -143,7 +141,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
     // Event to emit token removed
     event TokenRemoved(address token);
 
-    constructor() {
+    constructor() Ownable(msg.sender) {
         randomV2 = ContractRegistry.getRandomNumberV2();
         ftsoV2 = ContractRegistry.getTestFtsoV2();
         tokenToFeedId[NATIVE_TOKEN] = FLRUSD;
