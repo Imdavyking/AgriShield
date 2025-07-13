@@ -8,6 +8,8 @@ dotenv.config();
 
 export const getJsonProof = async (req: Request, res: Response) => {
   try {
+    // url: `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=temperature_2m`,
+
     const { flightId } = req.params;
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const data = await getJsonAttestation(flightId, baseUrl);
