@@ -3,9 +3,9 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const FlightModule = buildModule("FlightModule", (m) => {
-  const flightTicket = m.contract("FlightTicket", []);
-  return { flightTicket };
+const AgricShieldModule = buildModule("AgricShieldModule", (m) => {
+  const agricShield = m.contract("AgricShield", []);
+  return { agricShield };
 });
 
-export default FlightModule;
+export default AgricShieldModule;
