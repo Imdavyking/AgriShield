@@ -1,0 +1,105 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - 3100:3100
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+    secrets:
+      - JWT_SECRET
+      - MONGO_URI
+      - JQ_VERIFIER_URL_TESTNET
+      - JQ_VERIFIER_API_KEY_TESTNET
+      - RPC_URL
+      - FLIGHT_TICKET_CONTRACT_ADDRESS
+      - MONGO_URI
+      - OPENAI_API_KEY
+      - FDC_VERIFIER_URL_TESTNET
+      - FDC_VERIFIER_API_KEY_TESTNET
+    environment:
+      - FRONTEND_URL=http://localhost:5173
+      - MONGO_URI=${MONGO_URI:-mongodb://mongodb:27017/flight}
+      - PORT=3100
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3100"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 5173:5173
+    networks:
+      - app-network
+    env_file:
+      - ./frontend/.env
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis-data:/data
+
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+    volumes:
+      - mongodb-data:/data/db
+    command: mongod --quiet --logpath /dev/null
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+secrets:
+  MONGO_URI:
+    file: ./backend/secrets/MONGO_URI
+  JWT_SECRET:
+    file: ./backend/secrets/JWT_SECRET
+  JQ_VERIFIER_API_KEY_TESTNET:
+    file: ./backend/secrets/JQ_VERIFIER_API_KEY_TESTNET
+  JQ_VERIFIER_URL_TESTNET:
+    file: ./backend/secrets/JQ_VERIFIER_URL_TESTNET
+  RPC_URL:
+    file: ./backend/secrets/RPC_URL
+  FLIGHT_TICKET_CONTRACT_ADDRESS:
+    file: ./backend/secrets/FLIGHT_TICKET_CONTRACT_ADDRESS
+  OPENAI_API_KEY:
+    file: ./backend/secrets/OPENAI_API_KEY
+  FDC_VERIFIER_URL_TESTNET:
+    file: ./backend/secrets/FDC_VERIFIER_URL_TESTNET
+  FDC_VERIFIER_API_KEY_TESTNET:
+    file: ./backend/secrets/FDC_VERIFIER_API_KEY_TESTNET
+
+volumes:
+  mongodb-data:
+  redis-data:
