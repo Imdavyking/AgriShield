@@ -53,6 +53,10 @@ contract AgriShield is Ownable, ReentrancyGuard {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => InsurancePlan) public insurancePlans;
 
+    // use array also incase my indexer fails
+    InsurancePlan[] public insurancePlanList;
+    Policy[] public policyList;
+
     struct InsurancePlan {
         uint256 id;
         uint256 latitude;
@@ -220,6 +224,8 @@ contract AgriShield is Ownable, ReentrancyGuard {
             amountInUsd: _amountInUsd
         });
 
+        insurancePlanList.push(insurancePlans[planId]);
+
         emit InsurancePlanCreated(
             planId,
             _latitude,
@@ -228,6 +234,14 @@ contract AgriShield is Ownable, ReentrancyGuard {
             _endDate,
             _amountInUsd
         );
+    }
+
+    function getInsurancePlanList()
+        external
+        view
+        returns (InsurancePlan[] memory)
+    {
+        return insurancePlanList;
     }
 
     function payForPolicy(
