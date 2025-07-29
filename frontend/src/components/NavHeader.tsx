@@ -7,10 +7,9 @@ const NavHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
-    { to: "/how-it-works", label: "How It Works" },
-    { to: "/register", label: "Register" },
-    { to: "/features", label: "Features" },
-    { to: "/insurance", label: "Insurance" },
+    { to: "/plans", label: "Plans" },
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "/mint", label: "Mint USDC" },
   ];
 
   const renderLinks = (isMobile = false) =>

@@ -1,28 +1,17 @@
 import { useRoutes } from "react-router-dom";
 import Home from "../views/home/main";
 import NotFound from "../views/not-found/main";
-import FlightTickets from "../views/flight-tickets/tickets";
-import AdminDashboard from "../views/admin/main";
-import GetFlights from "../views/flight-tickets/get-flights";
 import Mint from "../views/mint/main";
+import PlansPage from "../views/plans/main";
 function Router() {
   const routes = [
     {
       path: "/",
       element: <Home />,
     },
-
     {
-      path: "/tickets",
-      element: <FlightTickets />,
-    },
-    {
-      path: "/flights",
-      element: <GetFlights />,
-    },
-    {
-      path: "/admin",
-      element: <AdminDashboard />,
+      path: "/plans",
+      element: <PlansPage />,
     },
     {
       path: "/mint",

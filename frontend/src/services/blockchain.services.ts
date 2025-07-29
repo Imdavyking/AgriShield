@@ -1,17 +1,14 @@
 import { BrowserProvider, ethers } from "ethers";
 import { flareTestnet, sepolia } from "viem/chains";
 import {
-  BACKEND_URL,
   FAILED_KEY,
-  FLIGHT_TICKET_CONTRACT_ADDRESS,
+  AGRICSHIELD_CONTRACT_ADDRESS,
   NATIVE_TOKEN,
 } from "../utils/constants";
-import flightTicketAbi from "../assets/json/flight-ticket.json";
-import erc20Abi from "../assets/json/erc20.json";
-import { FDCServiceEVMTransaction } from "./fdc.crosschain.services";
-import { getWholeNumber } from "../utils/whole.util";
+import agriShieldAbi from "../assets/json/agrishield.json";
+import { erc20Abi } from "viem";
 
-const flightAbiInterFace = new ethers.Interface(flightTicketAbi);
+const agriShieldAbiInterface = new ethers.Interface(agriShieldAbi);
 const erc20AbiInterface = new ethers.Interface(erc20Abi);
 
 export async function switchOrAddChain(
@@ -135,62 +132,6 @@ function parseContractError(error: any, contractInterface: ethers.Interface) {
   }
 }
 
-export const sendNativeToken = async ({
-  recipientAddress,
-  amount,
-}: {
-  recipientAddress: string;
-  amount: number;
-}) => {
-  try {
-    const signer = await getSigner();
-    await switchOrAddChain(signer.provider, flareTestnet.id);
-    const tx = await signer.sendTransaction({
-      to: recipientAddress,
-      value: ethers.parseEther(amount.toString()),
-    });
-    await tx.wait(1);
-
-    return `sent ${amount} ${flareTestnet.nativeCurrency.name} to ${recipientAddress}`;
-  } catch (error) {
-    return `${FAILED_KEY} to send ${amount} ${flareTestnet.nativeCurrency.name} to ${recipientAddress}`;
-  }
-};
-
-export const sendERC20Token = async ({
-  tokenAddress,
-  recipientAddress,
-  amount,
-}: {
-  tokenAddress: string;
-  recipientAddress: string;
-  amount: number;
-}) => {
-  try {
-    const contract = await getERC20Contract(tokenAddress);
-
-    const [decimals, name] = await Promise.all([
-      contract.decimals(),
-      contract.name(),
-    ]);
-
-    const tx = await contract.transfer(
-      recipientAddress,
-      getWholeNumber(Number(amount) * 10 ** Number(decimals))
-    );
-    await tx.wait(1);
-
-    return `sent ${amount} ${
-      name ? name : tokenAddress
-    } to ${recipientAddress}`;
-  } catch (error: any) {
-    const errorInfo = parseContractError(error, erc20AbiInterface);
-    return `${FAILED_KEY} to send ${amount} ${tokenAddress} to ${recipientAddress}: ${
-      errorInfo ? errorInfo.name : error.message
-    }`;
-  }
-};
-
 export const walletAddress = async () => {
   try {
     const signer = await getSigner();
@@ -252,14 +193,14 @@ export const _tokenBalance = async ({
   }
 };
 
-export const getFlightTicketContract = async () => {
+export const getAgriShieldContract = async () => {
   const signer = await getSigner();
 
   await switchOrAddChain(signer.provider, flareTestnet.id);
 
   return new ethers.Contract(
-    FLIGHT_TICKET_CONTRACT_ADDRESS,
-    flightAbiInterFace,
+    AGRICSHIELD_CONTRACT_ADDRESS,
+    agriShieldAbiInterface,
     signer
   );
 };
@@ -269,298 +210,55 @@ export const getERC20Contract = async (
   chainId: number = flareTestnet.id
 ) => {
   const signer = await getSigner();
-
   await switchOrAddChain(signer.provider, chainId);
   return new ethers.Contract(tokenAddress, erc20AbiInterface, signer);
 };
 
-export const createFlight = async ({
-  route,
-  date,
-  amountInUsd,
-}: {
-  route: string;
-  date: number;
-  amountInUsd: number;
-}) => {
-  try {
-    const flightTicket = await getFlightTicketContract();
-    const transaction = await flightTicket.createFlight(
-      route,
-      date,
-      amountInUsd
-    );
-
-    const receipt = await transaction.wait(1);
-    return `Created Flight with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-export const payForFlight = async ({
-  flightId,
+export const payForInsurance = async ({
+  policyId,
   token,
 }: {
+  policyId: string;
   token: string;
-  flightId: string;
 }) => {
   try {
-    const flightTicket = await getFlightTicketContract();
-    const flightDetails = await flightTicket.flights(flightId);
-    const usdPrice = flightDetails[3];
-    const tokenPrice = await flightTicket.getUsdToTokenPrice(token, usdPrice);
-
+    const insuranceContract = await getAgriShieldContract();
+    const insuranceDetails = await insuranceContract.insurancePlans(policyId);
+    const usdPrice = insuranceDetails[5];
+    const tokenPrice = await insuranceContract.getUsdToTokenPrice(
+      token,
+      usdPrice
+    );
     const isERC20Token = token.toLowerCase() !== NATIVE_TOKEN.toLowerCase();
+
     if (isERC20Token) {
       const tokenContract = await getERC20Contract(token);
       const signer = await getSigner();
       const owner = await signer.getAddress();
       const allowance = await tokenContract.allowance(
         owner,
-        FLIGHT_TICKET_CONTRACT_ADDRESS
+        AGRICSHIELD_CONTRACT_ADDRESS
       );
       if (allowance < tokenPrice) {
         const price = Number(tokenPrice) + 0.01 * Number(tokenPrice);
         const approveTx = await tokenContract.approve(
-          FLIGHT_TICKET_CONTRACT_ADDRESS,
+          AGRICSHIELD_CONTRACT_ADDRESS,
           price.toString()
         );
         await approveTx.wait(1);
       }
     }
 
-    const transaction = await flightTicket.payForFlight(flightId, token, {
+    const transaction = await insuranceContract.payForPolicy(policyId, token, {
       value: isERC20Token ? 0 : tokenPrice,
     });
 
     const receipt = await transaction.wait(1);
-    return `Bought Ticket with: ${receipt!.hash}`;
+    return `Created Insurance with: ${receipt!.hash}`;
   } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
+    const parsedError = parseContractError(error, agriShieldAbiInterface);
     console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
     return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-
-export const payUSDCSepoliaForFlight = async ({
-  flightId,
-  proof,
-}: {
-  flightId: string;
-  proof: any;
-}) => {
-  try {
-    const flightTicket = await getFlightTicketContract();
-    const transaction = await flightTicket.payUSDCSepoliaForFlight(
-      flightId,
-      proof
-    );
-
-    const receipt = await transaction.wait(1);
-    return `Bought Ticket with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-
-export const getUSDCSepoliaAddress = async () => {
-  const flightTicket = await getFlightTicketContract();
-  const usdcSepoliaAddress = await flightTicket.USDC_SEPOLIA_CONTRACT();
-  return usdcSepoliaAddress;
-};
-
-export const getUSDCFlareAddress = async () => {
-  const flightTicket = await getFlightTicketContract();
-  const usdcFlareAddress = await flightTicket.USDC_FLARE_CONTRACT();
-  return usdcFlareAddress;
-};
-
-export const mintUSDCFlare = async () => {
-  try {
-    const flightTicket = await getFlightTicketContract();
-    const usdcFlareAddress = await flightTicket.USDC_FLARE_CONTRACT();
-    const usdcFlare = await getERC20Contract(usdcFlareAddress, flareTestnet.id);
-    const decimals = Number(await usdcFlare.decimals());
-    const signer = await getSigner();
-    const owner = await signer.getAddress();
-    const amount = (10 * 10 ** decimals).toString();
-    const transaction = await usdcFlare.mint(owner, amount);
-
-    const receipt = await transaction.wait(1);
-    return `Minted token with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-
-export const mintUSDCSepolia = async () => {
-  try {
-    const flightTicket = await getFlightTicketContract();
-    const usdcFlareAddress = await flightTicket.USDC_SEPOLIA_CONTRACT();
-    const usdcFlare = await getERC20Contract(usdcFlareAddress, sepolia.id);
-    const decimals = Number(await usdcFlare.decimals());
-    const signer = await getSigner();
-    const owner = await signer.getAddress();
-    const amount = (10 * 10 ** decimals).toString();
-    const transaction = await usdcFlare.mint(owner, amount);
-    const receipt = await transaction.wait(1);
-    return `Minted token with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-
-export const refundTicket = async ({
-  flightId,
-  proof,
-}: {
-  flightId: string;
-  proof: any;
-}) => {
-  try {
-    const flightTicket = await getFlightTicketContract();
-    // const transaction = await flightTicket.refundTicketByPass(flightId, proof);
-    const transaction = await flightTicket.refundTicket(flightId, proof);
-
-    // refundTicketByPass
-
-    const receipt = await transaction.wait(1);
-    return `Created Flight with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-export const setHostName = async () => {
-  try {
-    console.log("Setting host name to:", BACKEND_URL);
-    const flightTicket = await getFlightTicketContract();
-    const transaction = await flightTicket.setHostName(BACKEND_URL);
-
-    const receipt = await transaction.wait(1);
-    return `Created Flight with: ${receipt!.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
-    return `${FAILED_KEY}${parsedError ?? error.message}`;
-  }
-};
-
-const getFlightPriceUSD = async (flightId: string) => {
-  const flightTicket = await getFlightTicketContract();
-
-  const flightDetails = await flightTicket.flights(flightId);
-  return flightDetails[3];
-};
-
-// --- Constants ---
-const USDC_TX_KEY_PREFIX = "tx-hash-usdc-sepolia";
-
-const getUSDCKey = (flightId: string) => `${USDC_TX_KEY_PREFIX}-${flightId}`;
-
-// --- Local Storage Utils ---
-const saveUSDCTransaction = (hash: string, flightId: string) => {
-  const data = {
-    hash,
-    flightId,
-    time: new Date().toISOString(),
-  };
-  localStorage.setItem(getUSDCKey(flightId), JSON.stringify(data));
-};
-
-const getUSDCTransaction = (
-  flightId: string
-): { hash: string; flightId: string } | null => {
-  const raw = localStorage.getItem(getUSDCKey(flightId));
-  return raw ? JSON.parse(raw) : null;
-};
-
-const deleteUSDCTransaction = (flightId: string) => {
-  localStorage.removeItem(getUSDCKey(flightId));
-};
-
-// --- Payment & Proof Logic ---
-const useSepoliaUSCPay = async (flightId: string): Promise<string> => {
-  try {
-    const savedUSDCTransaction = getUSDCTransaction(flightId);
-    if (savedUSDCTransaction) {
-      console.log(
-        `Transaction already exists for flightId ${flightId}: ${savedUSDCTransaction.hash}`
-      );
-      return `Transaction already exists for flightId ${flightId}: ${savedUSDCTransaction.hash}`;
-    }
-    const usdPrice = Number(await getFlightPriceUSD(flightId));
-    const USDC_SEPOLIA = await getUSDCSepoliaAddress();
-    const tokenContract = await getERC20Contract(USDC_SEPOLIA, sepolia.id);
-    const decimals = Number(await tokenContract.decimals());
-
-    const amount = (usdPrice * 10 ** decimals) / 100;
-    const transferTx = await tokenContract.transfer(
-      FLIGHT_TICKET_CONTRACT_ADDRESS,
-      amount.toString()
-    );
-
-    const receipt = await transferTx.wait(1);
-    saveUSDCTransaction(receipt.hash, flightId);
-
-    return `✅ USDC Sepolia payment created with hash: ${receipt.hash}`;
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    const message = parsedError || error.message;
-    console.error(`${FAILED_KEY}${message}`);
-    return `${FAILED_KEY}${message}`;
-  }
-};
-
-export const sepoliaUSDCPayAndProof = async (flightId: string) => {
-  try {
-    const response = await useSepoliaUSCPay(flightId);
-    rethrowFailedResponse(response);
-    const proofDetails = await submitSepoliaProofForFlight(flightId);
-    rethrowFailedResponse(proofDetails);
-  } catch (error: any) {
-    const parsedError = parseContractError(error, flightAbiInterFace);
-    const message = parsedError || error.message;
-    console.error(`${FAILED_KEY}${message}`);
-    return `${FAILED_KEY}${message}`;
-  }
-};
-
-const submitSepoliaProofForFlight = async (flightId: string): Promise<any> => {
-  try {
-    const tx = getUSDCTransaction(flightId);
-    if (!tx || !tx.hash)
-      throw new Error("No USDC transaction found for this flight");
-
-    const res = await fetch(
-      `${BACKEND_URL}/api/fdc/evm-transaction-proof/${tx.hash}`
-    );
-    if (!res.ok) throw new Error(`Failed to fetch proof: ${res.statusText}`);
-
-    const { data } = await res.json();
-    console.log("Fetched proof data:", data);
-    const signer = await getSigner();
-    await switchOrAddChain(signer.provider, flareTestnet.id);
-
-    const fdcService = new FDCServiceEVMTransaction();
-    const proof = await fdcService.getDataAndStoreProof(data);
-
-    const paymentInfo = await payUSDCSepoliaForFlight({ flightId, proof });
-
-    deleteUSDCTransaction(flightId);
-    return paymentInfo;
-  } catch (error: any) {
-    console.error(`❌ Error in submitting proof: ${error.message}`);
-    throw error;
   }
 };
 
