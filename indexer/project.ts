@@ -55,32 +55,34 @@ const project: EthereumProject = {
         abi: "Abi",
         address: process.env.FLIGHT_TICKET_CONTRACT_ADDRESS!,
       },
-      assets: new Map([["Abi", { file: "./abis/flight-ticket.json" }]]),
+      assets: new Map([["Abi", { file: "./abis/agrishield.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [
           {
-            handler: "handleFlightCreatedLog",
-            kind: EthereumHandlerKind.Event,
-            filter: {
-              topics: ["FlightCreated(uint256,string,uint256,uint256)"],
-            },
-          },
-          {
-            handler: "handleFlightTicketPurchasedLog",
+            handler: "handleInsurancePlanCreatedLog",
             kind: EthereumHandlerKind.Event,
             filter: {
               topics: [
-                "FlightTicketPurchased(uint256,uint256,string,uint256,string,string,uint256,address)",
+                "InsurancePlanCreated(uint256,uint256,uint256,uint256,uint256,uint256)",
               ],
             },
           },
           {
-            handler: "handleFlightTicketWithdrawnLog",
+            handler: "handleAgriShieldPurchasedLog",
             kind: EthereumHandlerKind.Event,
             filter: {
               topics: [
-                "FlightTicketWithdrawn(uint256,uint256,string,uint256,uint256,string,string,uint256,address,address)",
+                "AgriShieldPurchased(uint256,uint256,uint256,uint256,uint256,uint256,string,string,uint256,address)",
+              ],
+            },
+          },
+          {
+            handler: "handleAgriShieldWithdrawnLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "AgriShieldWithdrawn(uint256, uint256, uint256, uint256, uint256, uint256, uint256, string, string, uint256, address, address)",
               ],
             },
           },

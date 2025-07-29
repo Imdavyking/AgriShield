@@ -5,121 +5,18 @@
     "type": "constructor"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "FlightTicket__AlreadyPayingWithToken",
+    "inputs": [],
+    "name": "AgriShield_InsuranceAlreadyRefunded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FlightTicket__CanOnlyRefundPayer",
+    "name": "AgriShield_InsuranceNotExpired",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FlightTicket__DateisLessThanCurrentTime",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__FlightAlreadyExists",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__FlightExpired",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__FlightNotFound",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__FlightWentSuccessfully",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__IncorrectETHAmount",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__InvalidEVMProof",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__InvalidJsonProof",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__NotCorrectAmount",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "contractReceiver",
-        "type": "address"
-      }
-    ],
-    "name": "FlightTicket__NotCorrectReceiver",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "FlightTicket__NotSender",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__PriceNotAvailable",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__RandomNumberNotSecure",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__SendingFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__TicketAlreadyRefunded",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__TicketNotExpired",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FlightTicket__TicketNotSameAsData",
+    "name": "AgriShield_InsuranceNotSameAsData",
     "type": "error"
   },
   {
@@ -130,7 +27,57 @@
         "type": "address"
       }
     ],
-    "name": "FlightTicket__TokenAlreadySupported",
+    "name": "AgriShield__AlreadyPayingWithToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__CanOnlyRefundPayer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__DateisLessThanCurrentTime",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__IncorrectETHAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__InvalidJsonProof",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__PolicyAlreadyExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__PolicyExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__PolicyNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__PriceNotAvailable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__RandomNumberNotSecure",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__SendingFailed",
     "type": "error"
   },
   {
@@ -141,17 +88,71 @@
         "type": "address"
       }
     ],
-    "name": "FlightTicket__TokenNotSupported",
+    "name": "AgriShield__TokenAlreadySupported",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "AgriShield__TokenNotSupported",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FlightTicket__TransactionAlreadyProcessed",
+    "name": "AgriShield__TransactionAlreadyProcessed",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FlightTicket__UrlNotSupported",
+    "name": "AgriShield__UrlNotSupported",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__WeatherConditionNotMet",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "SafeERC20FailedOperation",
     "type": "error"
   },
   {
@@ -160,56 +161,37 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "route",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "date",
+        "name": "policyId",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amountPaid",
-        "type": "uint256"
-      }
-    ],
-    "name": "FlightCreated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "ticketId",
+        "name": "planId",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "flightId",
+        "name": "latitude",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "route",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "date",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "endDate",
         "type": "uint256"
       },
       {
@@ -227,7 +209,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amountPaid",
+        "name": "amountInUsd",
         "type": "uint256"
       },
       {
@@ -237,7 +219,7 @@
         "type": "address"
       }
     ],
-    "name": "FlightTicketPurchased",
+    "name": "AgriShieldPurchased",
     "type": "event"
   },
   {
@@ -246,25 +228,37 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "ticketId",
+        "name": "policyId",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "flightId",
+        "name": "planId",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "route",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "date",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "endDate",
         "type": "uint256"
       },
       {
@@ -288,7 +282,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amountPaid",
+        "name": "amountInUsd",
         "type": "uint256"
       },
       {
@@ -304,7 +298,50 @@
         "type": "address"
       }
     ],
-    "name": "FlightTicketWithdrawn",
+    "name": "AgriShieldWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
+      }
+    ],
+    "name": "InsurancePlanCreated",
     "type": "event"
   },
   {
@@ -470,13 +507,23 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_route",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "_latitude",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_date",
+        "name": "_longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endDate",
         "type": "uint256"
       },
       {
@@ -485,7 +532,7 @@
         "type": "uint256"
       }
     ],
-    "name": "createFlight",
+    "name": "createInsurancePlan",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -494,11 +541,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_planId",
         "type": "uint256"
       }
     ],
-    "name": "flights",
+    "name": "getInsurancePlanDetails",
     "outputs": [
       {
         "internalType": "uint256",
@@ -506,13 +553,23 @@
         "type": "uint256"
       },
       {
-        "internalType": "string",
-        "name": "route",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "date",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
         "type": "uint256"
       },
       {
@@ -528,31 +585,21 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_flightId",
+        "name": "lat",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "long",
         "type": "uint256"
       }
     ],
-    "name": "getFlightDetails",
+    "name": "getUrlFromLatAndLong",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "flightId",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
-        "name": "route",
+        "name": "",
         "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "date",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amountPaid",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -562,15 +609,15 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "flightId",
+        "name": "planId",
         "type": "uint256"
       }
     ],
-    "name": "getUrlFromFlightId",
+    "name": "getUrlFromPlanId",
     "outputs": [
       {
         "internalType": "string",
-        "name": "expectedUrl",
+        "name": "",
         "type": "string"
       }
     ],
@@ -617,162 +664,42 @@
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "bytes32[]",
-            "name": "merkleProof",
-            "type": "bytes32[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "attestationType",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "sourceId",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint64",
-                "name": "votingRound",
-                "type": "uint64"
-              },
-              {
-                "internalType": "uint64",
-                "name": "lowestUsedTimestamp",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "bytes32",
-                    "name": "transactionHash",
-                    "type": "bytes32"
-                  },
-                  {
-                    "internalType": "uint16",
-                    "name": "requiredConfirmations",
-                    "type": "uint16"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "provideInput",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "listEvents",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint32[]",
-                    "name": "logIndices",
-                    "type": "uint32[]"
-                  }
-                ],
-                "internalType": "struct IEVMTransaction.RequestBody",
-                "name": "requestBody",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "blockNumber",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "timestamp",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "sourceAddress",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "isDeployment",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "receivingAddress",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "value",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "input",
-                    "type": "bytes"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "status",
-                    "type": "uint8"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint32",
-                        "name": "logIndex",
-                        "type": "uint32"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "emitterAddress",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "bytes32[]",
-                        "name": "topics",
-                        "type": "bytes32[]"
-                      },
-                      {
-                        "internalType": "bytes",
-                        "name": "data",
-                        "type": "bytes"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "removed",
-                        "type": "bool"
-                      }
-                    ],
-                    "internalType": "struct IEVMTransaction.Event[]",
-                    "name": "events",
-                    "type": "tuple[]"
-                  }
-                ],
-                "internalType": "struct IEVMTransaction.ResponseBody",
-                "name": "responseBody",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct IEVMTransaction.Response",
-            "name": "data",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IEVMTransaction.Proof",
-        "name": "transaction",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "isEVMTransactionProofValid",
+    "name": "insurancePlans",
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -795,7 +722,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "flightId",
+        "name": "planId",
         "type": "uint256"
       },
       {
@@ -804,7 +731,7 @@
         "type": "address"
       }
     ],
-    "name": "payForFlight",
+    "name": "payForPolicy",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -813,170 +740,86 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "flightId",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "policies",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "policyId",
         "type": "uint256"
       },
       {
-        "components": [
-          {
-            "internalType": "bytes32[]",
-            "name": "merkleProof",
-            "type": "bytes32[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "attestationType",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "sourceId",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint64",
-                "name": "votingRound",
-                "type": "uint64"
-              },
-              {
-                "internalType": "uint64",
-                "name": "lowestUsedTimestamp",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "bytes32",
-                    "name": "transactionHash",
-                    "type": "bytes32"
-                  },
-                  {
-                    "internalType": "uint16",
-                    "name": "requiredConfirmations",
-                    "type": "uint16"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "provideInput",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "listEvents",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint32[]",
-                    "name": "logIndices",
-                    "type": "uint32[]"
-                  }
-                ],
-                "internalType": "struct IEVMTransaction.RequestBody",
-                "name": "requestBody",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "blockNumber",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "timestamp",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "sourceAddress",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "isDeployment",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "receivingAddress",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "value",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "input",
-                    "type": "bytes"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "status",
-                    "type": "uint8"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint32",
-                        "name": "logIndex",
-                        "type": "uint32"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "emitterAddress",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "bytes32[]",
-                        "name": "topics",
-                        "type": "bytes32[]"
-                      },
-                      {
-                        "internalType": "bytes",
-                        "name": "data",
-                        "type": "bytes"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "removed",
-                        "type": "bool"
-                      }
-                    ],
-                    "internalType": "struct IEVMTransaction.Event[]",
-                    "name": "events",
-                    "type": "tuple[]"
-                  }
-                ],
-                "internalType": "struct IEVMTransaction.ResponseBody",
-                "name": "responseBody",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct IEVMTransaction.Response",
-            "name": "data",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IEVMTransaction.Proof",
-        "name": "_transaction",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "planId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "weatherCondition",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "refundStatus",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountSent",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "payer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWithdrawn",
+        "type": "bool"
       }
     ],
-    "name": "payUSDCSepoliaForFlight",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "ticketId",
+        "name": "policyId",
         "type": "uint256"
       },
       {
@@ -1053,7 +896,7 @@
         "type": "tuple"
       }
     ],
-    "name": "refundTicket",
+    "name": "refundPolicy",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1062,7 +905,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "ticketId",
+        "name": "policyId",
         "type": "uint256"
       },
       {
@@ -1139,7 +982,7 @@
         "type": "tuple"
       }
     ],
-    "name": "refundTicketByPass",
+    "name": "refundPolicyByPass",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1206,75 +1049,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "tickets",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "ticketId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "flightId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "route",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "date",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "weatherCondition",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "refundStatus",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amountInUsd",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amountSent",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "payer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "isWithdrawn",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -1308,7 +1082,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_ticketId",
+        "name": "_policyId",
         "type": "uint256"
       }
     ],
@@ -1316,5 +1090,9 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]

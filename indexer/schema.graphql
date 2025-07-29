@@ -1,31 +1,38 @@
-type FlightCreated @entity {
+type InsurancePlanCreated @entity {
   id: ID!
-  flightId: BigInt!
-  route: String!
-  date: BigInt!
-  amountPaid: BigInt!
+  latitude: BigInt!
+  longitude: BigInt!
+  startDate: BigInt!
+  endDate: BigInt!
+  amountInUsd: BigInt!
 }
 
-type FlightTicketPurchased @entity {
+type AgriShieldPurchased @entity {
   id: ID!
-  ticketId: BigInt!
-  flightId: BigInt!
-  route: String!
-  date: BigInt!
+  policyId: BigInt!
+  planId: BigInt!
+  latitude: BigInt!
+  longitude: BigInt!
+  startDate: BigInt!
+  endDate: BigInt!
   weatherCondition: String!
   refundStatus: String!
-  amountPaid: BigInt!
+  amountInUsd: BigInt!
   payer: String!
 }
 
-type FlightTicketWithdrawn @entity {
+type AgriShieldWithdrawn @entity {
   id: ID!
-  ticketId: BigInt!
-  flightId: BigInt!
-  route: String!
-  date: BigInt!
+  policyId: BigInt!
+  planId: BigInt!
+  latitude: BigInt!
+  longitude: BigInt!
+  startDate: BigInt!
+  endDate: BigInt!
+  timestamp: BigInt!
   weatherCondition: String!
   refundStatus: String!
-  amountPaid: BigInt!
+  amountInUsd: BigInt!
+  token: String!
   recipient: String!
 }

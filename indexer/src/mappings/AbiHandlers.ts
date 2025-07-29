@@ -1,73 +1,78 @@
 import assert from "assert";
 import {
-  FlightCreatedLog,
-  FlightTicketPurchasedLog,
-  FlightTicketWithdrawnLog,
-} from "../types/abi-interfaces/FlightTicket";
+  InsurancePlanCreatedLog,
+  AgriShieldPurchasedLog,
+  AgriShieldWithdrawnLog,
+} from "../types/abi-interfaces/Agrishield";
 
 import {
-  FlightCreated,
-  FlightTicketPurchased,
-  FlightTicketWithdrawn,
+  AgriShieldPurchased as AgriShieldPurchasedModel,
+  AgriShieldWithdrawn,
+  InsurancePlanCreated,
 } from "../types";
 
-export async function handleFlightCreatedLog(log: FlightCreatedLog) {
-  logger.info(`New FlightCreated transaction log at block ${log.blockNumber}`);
+export async function handleInsurancePlanCreatedLog(
+  log: InsurancePlanCreatedLog
+) {
+  logger.info(`New Insurance transaction log at block ${log.blockNumber}`);
   assert(log.args, "No log.args");
 
-  const flightCreated = FlightCreated.create({
+  const insurancePlanCreated = InsurancePlanCreated.create({
     id: log.transactionHash,
-    flightId: log.args.id.toBigInt(),
-    route: log.args.route,
-    date: log.args.date.toBigInt(),
-    amountPaid: log.args.amountPaid.toBigInt(),
+    latitude: log.args.latitude.toBigInt(),
+    longitude: log.args.longitude.toBigInt(),
+    startDate: log.args.startDate.toBigInt(),
+    endDate: log.args.endDate.toBigInt(),
+    amountInUsd: log.args.amountInUsd.toBigInt(),
   });
 
-  await flightCreated.save();
+  await insurancePlanCreated.save();
 }
 
-export async function handleFlightTicketPurchasedLog(
-  log: FlightTicketPurchasedLog
-) {
+export async function handleAgriShieldPurchasedLog(log: AgriShieldPurchasedLog) {
   logger.info(
-    `New FlightTicketPurchased transaction log at block ${log.blockNumber}`
+    `New AgriShieldPurchasedLog transaction log at block ${log.blockNumber}`
   );
   assert(log.args, "No log.args");
 
-  const flightTicketPurchased = FlightTicketPurchased.create({
+  const agriShieldPurchased = AgriShieldPurchasedModel.create({
     id: log.transactionHash,
-    ticketId: log.args.ticketId.toBigInt(),
-    flightId: log.args.flightId.toBigInt(),
-    route: log.args.route,
-    date: log.args.date.toBigInt(),
-    refundStatus: log.args.refundStatus,
+    policyId: log.args.policyId.toBigInt(),
+    planId: log.args.planId.toBigInt(),
+    latitude: log.args.latitude.toBigInt(),
+    longitude: log.args.longitude.toBigInt(),
+    startDate: log.args.startDate.toBigInt(),
+    endDate: log.args.endDate.toBigInt(),
     weatherCondition: log.args.weatherCondition,
-    amountPaid: log.args.amountPaid.toBigInt(),
+    refundStatus: log.args.refundStatus,
+    amountInUsd: log.args.amountInUsd.toBigInt(),
     payer: log.args.payer,
   });
-
-  await flightTicketPurchased.save();
+  await agriShieldPurchased.save();
 }
 
-export async function handleFlightTicketWithdrawnLog(
-  log: FlightTicketWithdrawnLog
+export async function handleAgriShieldWithdrawnLog(
+  log: AgriShieldWithdrawnLog
 ) {
   logger.info(
-    `New FlightTicketWithdrawn transaction log at block ${log.blockNumber}`
+    `New AgriShieldWithdrawnLog transaction log at block ${log.blockNumber}`
   );
   assert(log.args, "No log.args");
 
-  const flightTicketWithdrawn = FlightTicketWithdrawn.create({
+  const agriShieldWithdrawn = AgriShieldWithdrawn.create({
     id: log.transactionHash,
-    route: log.args.route,
-    date: log.args.date.toBigInt(),
-    refundStatus: log.args.refundStatus,
+    policyId: log.args.policyId.toBigInt(),
+    planId: log.args.planId.toBigInt(),
+    latitude: log.args.latitude.toBigInt(),
+    longitude: log.args.longitude.toBigInt(),
+    startDate: log.args.startDate.toBigInt(),
+    endDate: log.args.endDate.toBigInt(),
+    timestamp: log.args.timestamp.toBigInt(),
     weatherCondition: log.args.weatherCondition,
-    ticketId: log.args.ticketId.toBigInt(),
-    amountPaid: log.args.amountPaid.toBigInt(),
+    refundStatus: log.args.refundStatus,
+    amountInUsd: log.args.amountInUsd.toBigInt(),
+    token: log.args.token,
     recipient: log.args.recipient,
-    flightId: log.args.flightId.toBigInt(),
   });
-
-  await flightTicketWithdrawn.save();
+  await agriShieldWithdrawn.save();
 }
