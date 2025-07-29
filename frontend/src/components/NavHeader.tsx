@@ -8,7 +8,7 @@ const NavHeader = () => {
 
   const links = [
     { to: "/how-it-works", label: "How It Works" },
-    { to: "/contact", label: "Contact" },
+    { to: "/register", label: "Register" },
     { to: "/features", label: "Features" },
     { to: "/insurance", label: "Insurance" },
   ];
