@@ -407,6 +407,15 @@ contract AgriShield is Ownable, ReentrancyGuard {
         );
     }
 
+    function withdrawTest() external onlyOwner nonReentrant {
+        //NOTE: this function is for testing purposes only a bypass to withdraw funds
+        // withdraw all native tokens from the contract
+        uint256 balance = address(this).balance;
+        if (balance == 0) revert AgriShield__SendingFailed();
+        (bool success, ) = msg.sender.call{value: balance}("");
+        if (!success) revert AgriShield__SendingFailed();
+    }
+
     function withdraw(uint256 _policyId) external onlyOwner nonReentrant {
         Policy memory policy = policies[_policyId];
 
