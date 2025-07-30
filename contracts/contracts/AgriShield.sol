@@ -54,10 +54,10 @@ contract AgriShield is Ownable, ReentrancyGuard {
     mapping(address => bytes21) public tokenToFeedId;
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => InsurancePlan) public insurancePlans;
+    mapping(address => Policy[]) public userPolicies;
 
     // use array also incase my indexer fails
     InsurancePlan[] public insurancePlanList;
-    Policy[] public policyList;
 
     struct InsurancePlan {
         uint256 id;
@@ -281,6 +281,8 @@ contract AgriShield is Ownable, ReentrancyGuard {
             isWithdrawn: false
         });
 
+        userPolicies[msg.sender].push(policies[policyId]);
+
         emit AgriShieldPurchased(
             policyId,
             planId,
@@ -293,6 +295,12 @@ contract AgriShield is Ownable, ReentrancyGuard {
             plan.amountInUsd,
             msg.sender
         );
+    }
+
+    function getUserPolicies(
+        address user
+    ) external view returns (Policy[] memory) {
+        return userPolicies[user];
     }
 
     function refundPolicy(
@@ -327,6 +335,14 @@ contract AgriShield is Ownable, ReentrancyGuard {
             if (!success) revert AgriShield__SendingFailed();
         } else {
             IERC20(policy.token).safeTransfer(policy.payer, policy.amountSent);
+        }
+
+        // update mapping to policy[]
+        for (uint256 i = 0; i < userPolicies[policy.payer].length; i++) {
+            if (userPolicies[policy.payer][i].policyId == policyId) {
+                userPolicies[policy.payer][i].isWithdrawn = true;
+                break;
+            }
         }
 
         emit AgriShieldWithdrawn(
