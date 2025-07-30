@@ -2,16 +2,27 @@ import { ellipsify } from "../../utils/ellipsify";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import {
+  checkUserPlan,
+  getSigner,
   payForInsurance,
   rethrowFailedResponse,
 } from "../../services/blockchain.services";
 import { FIAT_DECIMAL_PLACES, NATIVE_TOKEN } from "../../utils/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const formatDate = (unix: string | number) => {
   return new Date(+unix * 1000).toLocaleDateString();
 };
 const Plan = ({ plan }: { plan: any }) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      const paidPlan = await checkUserPlan({ planId: plan.id });
+      console.log(`User payment status for plan ${plan.id}:`, paidPlan);
+      setIsPaid(paidPlan);
+    };
+    checkPaymentStatus();
+  }, [plan]);
   const payInsurance = async () => {
     try {
       // Implement the payment logic here
@@ -56,11 +67,14 @@ const Plan = ({ plan }: { plan: any }) => {
       <button
         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"
         onClick={payInsurance}
+        disabled={isProcessing || isPaid}
       >
         {isProcessing ? (
-          <FaSpinner className="animate-spin w-5 h-5" />
+          <FaSpinner className="animate-spin" />
+        ) : isPaid ? (
+          "Already Paid"
         ) : (
-          "Pay Now"
+          "Pay for Insurance"
         )}
       </button>
     </div>

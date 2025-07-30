@@ -77,12 +77,6 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer id="contact" className="bg-green-700 text-white py-6 text-center">
-        <p>
-          Contact us at{" "}
-          <a href="mailto:support@agrishield.com" className="underline">
-            support@agrishield.com
-          </a>
-        </p>
         <p className="mt-2 text-sm">
           &copy; {new Date().getFullYear()} AgriShield. All rights reserved.
         </p>

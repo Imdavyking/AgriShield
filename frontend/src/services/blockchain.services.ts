@@ -215,9 +215,15 @@ export const getERC20Contract = async (
   return new ethers.Contract(tokenAddress, erc20AbiInterface, signer);
 };
 
+export const checkUserPlan = async ({ planId }: { planId: string }) => {
+  const insuranceContract = await getAgriShieldContract();
+  const userAddress = await getSigner().then((signer) => signer.getAddress());
+  const isPaid = await insuranceContract.userPlanProcessed(planId, userAddress);
+  return isPaid;
+};
+
 export const getAllInsurance = async () => {
   const insuranceContract = await getAgriShieldContract();
-  console.log(insuranceContract);
   const insuranceList = await insuranceContract.getInsurancePlanList();
   const formattedInsuranceList = insuranceList.map((plan: any) => ({
     id: plan[0].toString(),

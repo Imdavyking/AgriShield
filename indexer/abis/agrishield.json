@@ -11,6 +11,11 @@
   },
   {
     "inputs": [],
+    "name": "AgriShield_InsuranceExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "AgriShield_InsuranceNotExpired",
     "type": "error"
   },
@@ -28,6 +33,11 @@
       }
     ],
     "name": "AgriShield__AlreadyPayingWithToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AgriShield__AmountMustBeGreaterThanOneDollar",
     "type": "error"
   },
   {
@@ -582,43 +592,45 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "lat",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "long",
-        "type": "uint256"
-      }
-    ],
-    "name": "getUrlFromLatAndLong",
+    "inputs": [],
+    "name": "getInsurancePlanList",
     "outputs": [
       {
-        "internalType": "string",
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "latitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "longitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountInUsd",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct AgriShield.InsurancePlan[]",
         "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "planId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getUrlFromPlanId",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -649,6 +661,92 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserPolicies",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "policyId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "planId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "latitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "longitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "weatherCondition",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "refundStatus",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountInUsd",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountSent",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "payer",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isWithdrawn",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct AgriShield.Policy[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "hostName",
     "outputs": [
@@ -656,6 +754,50 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "insurancePlanList",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1082,11 +1224,126 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userPlanProcessed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "userPolicies",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "policyId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "planId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "weatherCondition",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "refundStatus",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountSent",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "payer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWithdrawn",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_policyId",
         "type": "uint256"
       }
     ],
     "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawTest",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

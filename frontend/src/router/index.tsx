@@ -2,6 +2,7 @@ import { useRoutes } from "react-router-dom";
 import Home from "../views/home/main";
 import NotFound from "../views/not-found/main";
 import PlansPage from "../views/plans/main";
+import DashboardPage from "../views/dashboard/main";
 function Router() {
   const routes = [
     {
@@ -11,6 +12,10 @@ function Router() {
     {
       path: "/plans",
       element: <PlansPage />,
+    },
+    {
+      path: "/dashboard",
+      element: <DashboardPage />,
     },
     {
       path: "*",
