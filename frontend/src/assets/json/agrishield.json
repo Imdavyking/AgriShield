@@ -582,6 +582,51 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getInsurancePlanList",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "latitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "longitude",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountInUsd",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct AgriShield.InsurancePlan[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -656,6 +701,50 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "insurancePlanList",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -745,6 +834,85 @@
       }
     ],
     "name": "policies",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "policyId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "planId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "latitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "longitude",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "weatherCondition",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "refundStatus",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInUsd",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountSent",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "payer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWithdrawn",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "policyList",
     "outputs": [
       {
         "internalType": "uint256",

@@ -1,37 +1,24 @@
-import React from "react";
-
-const demoPlans = [
-  {
-    id: 1,
-    latitude: 34.0522,
-    longitude: -118.2437,
-    startDate: 1720000000,
-    endDate: 1750000000,
-    amountInUsd: 500,
-  },
-  {
-    id: 2,
-    latitude: 1.3521,
-    longitude: 103.8198,
-    startDate: 1725000000,
-    endDate: 1755000000,
-    amountInUsd: 750,
-  },
-  {
-    id: 3,
-    latitude: 19.076,
-    longitude: 72.8777,
-    startDate: 1722000000,
-    endDate: 1752000000,
-    amountInUsd: 300,
-  },
-];
+import { useEffect, useState } from "react";
+import { getAllInsurance } from "../../services/blockchain.services";
 
 const formatDate = (unix: string | number) => {
   return new Date(+unix * 1000).toLocaleDateString();
 };
 
 export default function PlansPage() {
+  const [plans, setPlans] = useState([]);
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const insurancePlans = await getAllInsurance();
+        setPlans(insurancePlans);
+      } catch (error) {
+        console.error("Error fetching insurance plans:", error);
+      }
+    };
+
+    fetchPlans();
+  }, []);
   return (
     <div className="min-h-screen bg-green-50 py-10 px-4">
       <div className="max-w-6xl mx-auto">
@@ -39,7 +26,7 @@ export default function PlansPage() {
           Available Insurance Plans
         </h1>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {demoPlans.map((plan) => (
+          {plans.map((plan) => (
             <div
               key={plan.id}
               className="bg-white shadow-md rounded-lg p-6 border border-green-100"

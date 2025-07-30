@@ -4,6 +4,7 @@ import {
   FAILED_KEY,
   AGRICSHIELD_CONTRACT_ADDRESS,
   NATIVE_TOKEN,
+  LOCATION_DECIMAL_PLACES,
 } from "../utils/constants";
 import agriShieldAbi from "../assets/json/agrishield.json";
 import { erc20Abi } from "viem";
@@ -212,6 +213,24 @@ export const getERC20Contract = async (
   const signer = await getSigner();
   await switchOrAddChain(signer.provider, chainId);
   return new ethers.Contract(tokenAddress, erc20AbiInterface, signer);
+};
+
+export const getAllInsurance = async () => {
+  const insuranceContract = await getAgriShieldContract();
+  console.log(insuranceContract);
+  const insuranceList = await insuranceContract.getInsurancePlanList();
+  const formattedInsuranceList = insuranceList.map((plan: any) => ({
+    id: plan[0].toString(),
+    latitude: Number(plan[1]) / 10 ** LOCATION_DECIMAL_PLACES,
+    longitude: Number(plan[2]) / 10 ** LOCATION_DECIMAL_PLACES,
+    startDate: Number(plan[3]),
+    endDate: Number(plan[4]),
+    amountInUsd: Number(plan[5]),
+  }));
+
+  console.log("Insurance Plans:", formattedInsuranceList);
+
+  return formattedInsuranceList;
 };
 
 export const payForInsurance = async ({

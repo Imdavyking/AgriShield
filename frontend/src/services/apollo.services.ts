@@ -1,8 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { FLIGHT_TICKET_SUBQUERY_ENDPOINT } from "../utils/constants";
+import { AGRICSHIELD_SUBQUERY_ENDPOINT } from "../utils/constants";
 
 const client = new ApolloClient({
-  uri: FLIGHT_TICKET_SUBQUERY_ENDPOINT,
+  uri: AGRICSHIELD_SUBQUERY_ENDPOINT,
   cache: new InMemoryCache(),
 });
 
