@@ -30,6 +30,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
     error AgriShield_InsuranceNotExpired();
     error AgriShield__CanOnlyRefundPayer();
     error AgriShield__InvalidJsonProof();
+    error AgriShield_InsuranceExpired();
     error AgriShield__UrlNotSupported();
     error AgriShield__WeatherConditionNotMet();
     error AgriShield_InsuranceNotSameAsData();
@@ -176,29 +177,12 @@ contract AgriShield is Ownable, ReentrancyGuard {
             );
     }
 
-    function getUrlFromLatAndLong(
-        uint256 lat,
-        uint256 long
-    ) public view returns (string memory) {
-        return
-            string(
-                abi.encodePacked(
-                    hostName,
-                    "v1/forecast?latitude=",
-                    lat.toString(),
-                    "&longitude=",
-                    long.toString(),
-                    "&current=temperature_2m"
-                )
-            );
-    }
-
-    function getUrlFromPlanId(
-        uint256 planId
-    ) public view returns (string memory) {
-        InsurancePlan memory plan = insurancePlans[planId];
-        return getUrlFromLatAndLong(plan.latitude, plan.longitude);
-    }
+    // function getUrlFromPlanId(
+    //     uint256 planId
+    // ) public view returns (string memory) {
+    //     InsurancePlan memory plan = insurancePlans[planId];
+    //     return getUrlFromLatAndLong(plan.latitude, plan.longitude);
+    // }
 
     function createInsurancePlan(
         uint256 _latitude,
@@ -211,7 +195,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             revert AgriShield__DateisLessThanCurrentTime();
         }
 
-        if(_amountInUsd < FIAT_priceDecimals){
+        if (_amountInUsd < FIAT_priceDecimals) {
             revert AgriShield__AmountMustBeGreaterThanOneDollar();
         }
 
@@ -319,7 +303,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
 
         Policy memory policy = policies[policyId];
         if (policy.endDate > block.timestamp)
-            revert AgriShield_InsuranceNotExpired();
+            revert AgriShield_InsuranceExpired();
         if (policy.payer != msg.sender) revert AgriShield__CanOnlyRefundPayer();
         if (policy.isWithdrawn) revert AgriShield_InsuranceAlreadyRefunded();
 
@@ -328,13 +312,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             (DataTransportObject)
         );
 
-        if (
-            keccak256(
-                bytes(getUrlFromLatAndLong(policy.latitude, policy.longitude))
-            ) != keccak256(bytes(_proof.data.requestBody.url))
-        ) {
-            revert AgriShield__UrlNotSupported();
-        }
+        _validateUrlPrefix(_proof.data.requestBody.url);
 
         if (dto.planId != policy.planId)
             revert AgriShield_InsuranceNotSameAsData();
@@ -367,6 +345,21 @@ contract AgriShield is Ownable, ReentrancyGuard {
         );
     }
 
+    function _validateUrlPrefix(string memory url) internal view {
+        bytes memory urlBytes = bytes(url);
+        bytes memory hostBytes = bytes(hostName);
+
+        if (urlBytes.length < hostBytes.length) {
+            revert AgriShield__UrlNotSupported();
+        }
+
+        for (uint256 i = 0; i < hostBytes.length; i++) {
+            if (urlBytes[i] != hostBytes[i]) {
+                revert AgriShield__UrlNotSupported();
+            }
+        }
+    }
+
     function refundPolicyByPass(
         uint256 policyId,
         IJsonApi.Proof calldata _proof
@@ -381,13 +374,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             (DataTransportObject)
         );
 
-        if (
-            keccak256(
-                bytes(getUrlFromLatAndLong(policy.latitude, policy.longitude))
-            ) != keccak256(bytes(_proof.data.requestBody.url))
-        ) {
-            revert AgriShield__UrlNotSupported();
-        }
+        _validateUrlPrefix(_proof.data.requestBody.url);
 
         if (dto.planId != policy.planId)
             revert AgriShield_InsuranceNotSameAsData();
