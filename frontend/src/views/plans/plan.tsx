@@ -5,7 +5,7 @@ import {
   payForInsurance,
   rethrowFailedResponse,
 } from "../../services/blockchain.services";
-import { NATIVE_TOKEN } from "../../utils/constants";
+import { FIAT_DECIMAL_PLACES, NATIVE_TOKEN } from "../../utils/constants";
 import { useState } from "react";
 const formatDate = (unix: string | number) => {
   return new Date(+unix * 1000).toLocaleDateString();
@@ -50,7 +50,8 @@ const Plan = ({ plan }: { plan: any }) => {
         <span className="font-semibold">End:</span> {formatDate(plan.endDate)}
       </p>
       <p className="text-gray-700 mb-4">
-        <span className="font-semibold">Amount:</span> ${plan.amountInUsd}
+        <span className="font-semibold">Amount:</span> $
+        {plan.amountInUsd / FIAT_DECIMAL_PLACES}
       </p>
       <button
         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"

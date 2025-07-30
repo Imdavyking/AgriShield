@@ -10,3 +10,4 @@ export const FDC_HELPER_ADDRESS = import.meta.env.VITE_FDC_HELPER_ADDRESS;
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const NATIVE_TOKEN = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 export const LOCATION_DECIMAL_PLACES = 4;
+export const FIAT_DECIMAL_PLACES = 100; // Assuming USD amounts are in cents
