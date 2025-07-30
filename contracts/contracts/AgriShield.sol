@@ -55,6 +55,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => InsurancePlan) public insurancePlans;
     mapping(address => Policy[]) public userPolicies;
+    mapping(uint256 => mapping(address => bool)) public userPlanProcessed;
 
     // use array also incase my indexer fails
     InsurancePlan[] public insurancePlanList;
@@ -237,6 +238,9 @@ contract AgriShield is Ownable, ReentrancyGuard {
         uint256 planId,
         address token
     ) public payable nonReentrant {
+        if (userPlanProcessed[planId][msg.sender]) {
+            revert AgriShield__TransactionAlreadyProcessed();
+        }
         InsurancePlan memory plan = insurancePlans[planId];
         if (plan.id == 0) revert AgriShield__PolicyNotFound();
         if (plan.endDate < block.timestamp) revert AgriShield__PolicyExpired();
@@ -262,6 +266,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
         }
 
         uint256 policyId = generateUniqueId();
+
         if (policies[policyId].policyId != 0)
             revert AgriShield__PolicyAlreadyExists();
 
@@ -282,6 +287,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
         });
 
         userPolicies[msg.sender].push(policies[policyId]);
+        userPlanProcessed[planId][msg.sender] = true;
 
         emit AgriShieldPurchased(
             policyId,
@@ -344,6 +350,8 @@ contract AgriShield is Ownable, ReentrancyGuard {
                 break;
             }
         }
+
+        userPlanProcessed[policy.planId][policy.payer] = true;
 
         emit AgriShieldWithdrawn(
             policyId,
