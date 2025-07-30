@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-green-50 text-gray-800 font-sans">
@@ -11,12 +13,12 @@ export default function HomePage() {
             AgriShield offers weather-indexed insurance tailored for farmers.
             Stay covered against drought, floods, and other climate risks.
           </p>
-          <a
-            href="#get-started"
+          <Link
+            to="/plans"
             className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition"
           >
             Get Started
-          </a>
+          </Link>
         </div>
       </section>
 

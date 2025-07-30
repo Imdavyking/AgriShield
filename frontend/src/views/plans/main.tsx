@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllInsurance } from "../../services/blockchain.services";
+import { ellipsify } from "../../utils/ellipsify";
 
 const formatDate = (unix: string | number) => {
   return new Date(+unix * 1000).toLocaleDateString();
@@ -26,13 +27,13 @@ export default function PlansPage() {
           Available Insurance Plans
         </h1>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan) => (
+          {plans.map((plan: any) => (
             <div
               key={plan.id}
               className="bg-white shadow-md rounded-lg p-6 border border-green-100"
             >
               <h2 className="text-xl font-semibold text-green-800 mb-2">
-                Plan #{plan.id}
+                Plan #{ellipsify(plan.id, 15)}
               </h2>
               <p className="text-gray-700">
                 <span className="font-semibold">Location:</span>{" "}
