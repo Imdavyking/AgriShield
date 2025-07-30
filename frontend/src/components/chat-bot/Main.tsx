@@ -140,7 +140,7 @@ const ChatWithAdminBot = () => {
       <div className="fixed bottom-24 right-4 mb-4 mr-10 z-50 shadow-md border rounded-full">
         <button
           onClick={toggleChatbox}
-          className="bg-[#28334e] text-white py-2 px-4 rounded-full hover:bg-[#1f2937] transition duration-300 flex items-center h-12 cursor-pointer"
+          className="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-600 transition duration-300 flex items-center h-12 cursor-pointer"
         >
           <FaComment className="w-6 h-6" />
         </button>
@@ -151,7 +151,7 @@ const ChatWithAdminBot = () => {
         <div className="fixed bottom-24 right-4 w-96 z-50">
           <div className="bg-white shadow-md rounded-lg max-w-lg w-full relative">
             {/* Chatbox Header */}
-            <div className="p-4 border-b bg-[#28334e] text-white rounded-t-lg flex justify-between items-center">
+            <div className="p-4 border-b bg-green-600 text-white rounded-t-lg flex justify-between items-center">
               <p className="text-lg font-semibold">AI Agent</p>
               <button
                 onClick={toggleChatbox}
@@ -253,11 +253,12 @@ const ChatWithAdminBot = () => {
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={handleInputKeyPress}
                 placeholder="Type a message"
-                className="w-full px-3 py-2 border text-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#28334e]"
+                className="w-full px-3 py-2 border text-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-600"
               />
               <button
                 onClick={handleSend}
-                className="bg-[#28334e] text-white px-4 py-2 rounded-r-md hover:bg-[#1f2937] transition duration-300"
+                className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-300 transition duration-300 cursor-pointer"
+                disabled={isProcessing}
               >
                 {isProcessing ? (
                   <FaSpinner className="w-5 h-5 animate-spin" />

@@ -9,7 +9,7 @@ const NavHeader = () => {
   const links = [
     { to: "/plans", label: "Plans" },
     { to: "/dashboard", label: "Dashboard" },
-    { to: "/mint", label: "Mint USDC" },
+    // { to: "/mint", label: "Mint USDC" },
   ];
 
   const renderLinks = (isMobile = false) =>
