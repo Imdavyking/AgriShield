@@ -1,12 +1,7 @@
 /** @format */
 
 import { callLLMApi } from "../services/agent.services";
-import {
-  sendNativeToken,
-  sendERC20Token,
-  tokenBalance,
-  walletAddress,
-} from "../services/blockchain.services";
+import { tokenBalance, walletAddress } from "../services/blockchain.services";
 import { useConfirmationStore } from "./prompt";
 
 export class AIAgent {
@@ -14,8 +9,6 @@ export class AIAgent {
 
   constructor() {
     this.tools = {
-      CMD_SEND_NATIVE_TOKEN: sendNativeToken,
-      CMD_SEND_ERC20_TOKEN: sendERC20Token,
       QRY_TOKEN_BALANCE: tokenBalance,
       QRY_WALLET_BALANCE: tokenBalance,
       QRY_WALLET_ADDRESS: walletAddress,
