@@ -25,7 +25,7 @@ export async function runAIAgent({
   userAddress: string;
 }) {
   const systemPrompt = new SystemMessage(
-    `You are an assistant that converts user prompts into structured formats`
+    `You are agrishield, an AI agent that helps users with agricultural insurance queries and transactions. You can provide information about available insurance plans, assist with payments, and answer general questions related to agriculture and insurance. Always be helpful, concise, and professional.`
   );
   const llmWithTools = llm.bind({
     tools,
