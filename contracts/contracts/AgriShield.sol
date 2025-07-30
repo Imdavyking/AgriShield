@@ -36,6 +36,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
     error AgriShield__PolicyExpired();
     error AgriShield__AlreadyPayingWithToken(address token);
     error AgriShield__DateisLessThanCurrentTime();
+    error AgriShield__AmountMustBeGreaterThanOneDollar();
 
     bytes21 public constant FLRUSD =
         bytes21(0x01464c522f55534400000000000000000000000000); // FLR/USD
@@ -208,6 +209,10 @@ contract AgriShield is Ownable, ReentrancyGuard {
     ) external onlyOwner {
         if (_startDate < block.timestamp) {
             revert AgriShield__DateisLessThanCurrentTime();
+        }
+
+        if(_amountInUsd < FIAT_priceDecimals){
+            revert AgriShield__AmountMustBeGreaterThanOneDollar();
         }
 
         uint256 planId = generateUniqueId();

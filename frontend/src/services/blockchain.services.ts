@@ -243,6 +243,7 @@ export const payForInsurance = async ({
   try {
     const insuranceContract = await getAgriShieldContract();
     const insuranceDetails = await insuranceContract.insurancePlans(policyId);
+    console.log("Insurance Details:", insuranceDetails);
     const usdPrice = insuranceDetails[5];
     const tokenPrice = await insuranceContract.getUsdToTokenPrice(
       token,
