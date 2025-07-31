@@ -88,8 +88,8 @@ contract AgriShield is Ownable, ReentrancyGuard {
     struct DataTransportObject {
         string time;
         uint256 interval;
-        int256 temperature;
-        int256 windspeed;
+        uint256 temperature;
+        uint256 windspeed;
         uint256 winddirection;
         uint8 isDay;
         uint256 weathercode;

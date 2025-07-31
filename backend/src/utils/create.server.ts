@@ -9,7 +9,6 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import { createServer } from "http";
 import { allowedOrigins } from "./constants";
 import fdcRoutes from "../routes/fdc.routes";
-import flightRoutes from "../routes/flight.routes";
 import llmRoutes from "../routes/llm.routes";
 dotenv.config();
 const app = express();
@@ -68,7 +67,6 @@ app.get("/", (req: Request, res: Response) => {
 
 // Routes
 app.use("/api/fdc", fdcRoutes);
-app.use("/api/flight", flightRoutes);
 app.use("/api/llm", llmRoutes);
 
 // Error handling middleware

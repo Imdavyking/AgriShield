@@ -138,12 +138,12 @@ export async function getJsonAttestation(baseUrl: string) {
 
   const postprocessJq = `{
   time: .current_weather.time,
-  interval: .current_weather.interval,
-  temperature: .current_weather.temperature,
-  windspeed: .current_weather.windspeed,
-  winddirection: .current_weather.winddirection,
-  isDay: .current_weather.is_day,
-  weathercode: .current_weather.weathercode
+  interval: (.current_weather.interval // 0 | floor),
+  temperature: (.current_weather.temperature // 0 | floor),
+  windspeed: (.current_weather.windspeed // 0 | floor),
+  winddirection: (.current_weather.winddirection // 0 | floor),
+  isDay: (.current_weather.is_day // 0 | floor),
+  weathercode: (.current_weather.weathercode // 0 | floor)
 }`;
 
   const abiSignature = `{
@@ -159,14 +159,14 @@ export async function getJsonAttestation(baseUrl: string) {
       "type": "uint256"
     },
     {
-      "internalType": "float",
+      "internalType": "uint256",
       "name": "temperature",
-      "type": "float"
+      "type": "uint256"
     },
     {
-      "internalType": "float",
+      "internalType": "uint256",
       "name": "windspeed",
-      "type": "float"
+      "type": "uint256"
     },
     {
       "internalType": "uint256",

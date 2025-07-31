@@ -361,7 +361,7 @@ export const getJsonProof = async ({
   lat: string;
   long: string;
 }) => {
-  const res = await fetch(`${BACKEND_URL}/json-proof/${lat}/${long}`);
+  const res = await fetch(`${BACKEND_URL}/api/fdc/json-proof/${lat}/${long}`);
 };
 
 export const rethrowFailedResponse = (response: string) => {
@@ -370,3 +370,4 @@ export const rethrowFailedResponse = (response: string) => {
   }
   return response;
 };
+
