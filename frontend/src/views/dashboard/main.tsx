@@ -1,5 +1,7 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { Link } from "react-router-dom";
+import { LOCATION_DECIMAL_PLACES } from "../../utils/constants";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -35,7 +37,7 @@ const paidPlans = [
     endDate: 1755000000,
     amountInUsd: 300,
     token: "DAI",
-    status: "Active",
+    status: "Withdrawn",
   },
 ];
 
@@ -44,16 +46,19 @@ const formatDate = (unix: string | number) =>
 
 const DashboardPage = () => {
   const total = paidPlans.length;
+  // const active = paidPlans.filter((p) => p.status === "Active").length;
+  // const expired = total - active;
   const active = paidPlans.filter((p) => p.status === "Active").length;
-  const expired = total - active;
+  const expired = paidPlans.filter((p) => p.status === "Expired").length;
+  const withdrawn = paidPlans.filter((p) => p.status === "Withdrawn").length;
   const totalUsd = paidPlans.reduce((sum, p) => sum + p.amountInUsd, 0);
 
   const data = {
-    labels: ["Active", "Expired"],
+    labels: ["Active", "Expired", "Withdrawn"],
     datasets: [
       {
-        data: [active, expired],
-        backgroundColor: ["#10B981", "#EF4444"],
+        data: [active, expired, withdrawn],
+        backgroundColor: ["#10B981", "#EF4444", "#6366F1"],
         borderWidth: 1,
       },
     ],
@@ -75,6 +80,10 @@ const DashboardPage = () => {
           <div className="bg-white shadow-xl rounded-lg p-4 border-l-4 border-emerald-500 hover:scale-105 transition">
             <p className="text-sm text-gray-500">Active</p>
             <p className="text-2xl font-bold text-emerald-700">{active}</p>
+          </div>
+          <div className="bg-white shadow-xl rounded-lg p-4 border-l-4 border-blue-500 hover:scale-105 transition">
+            <p className="text-sm text-gray-500">Withdrawn</p>
+            <p className="text-2xl font-bold text-blue-600">{withdrawn}</p>
           </div>
           <div className="bg-white shadow-xl rounded-lg p-4 border-l-4 border-red-500 hover:scale-105 transition">
             <p className="text-sm text-gray-500">Expired</p>
@@ -105,8 +114,9 @@ const DashboardPage = () => {
                 Policy #{plan.id}
               </h3>
               <p className="text-gray-600 text-sm">
-                <strong>Location:</strong> {plan.latitude.toFixed(2)},{" "}
-                {plan.longitude.toFixed(2)}
+                <strong>Location:</strong>{" "}
+                {plan.latitude.toFixed(LOCATION_DECIMAL_PLACES)},{" "}
+                {plan.longitude.toFixed(LOCATION_DECIMAL_PLACES)}
               </p>
               <p className="text-gray-600 text-sm">
                 <strong>Duration:</strong> {formatDate(plan.startDate)} -{" "}
@@ -118,8 +128,10 @@ const DashboardPage = () => {
               <span
                 className={`inline-block mt-3 px-3 py-1 rounded-full text-xs font-semibold ${
                   plan.status === "Active"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-600"
+                    ? "bg-green-100 text-green-700"
+                    : plan.status === "Expired"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-blue-100 text-blue-700"
                 }`}
               >
                 {plan.status}
