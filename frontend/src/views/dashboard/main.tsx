@@ -2,6 +2,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 import { LOCATION_DECIMAL_PLACES } from "../../utils/constants";
+import { useEffect } from "react";
+import { getUserPolicies } from "../../services/blockchain.services";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -46,12 +48,22 @@ const formatDate = (unix: string | number) =>
 
 const DashboardPage = () => {
   const total = paidPlans.length;
-  // const active = paidPlans.filter((p) => p.status === "Active").length;
-  // const expired = total - active;
   const active = paidPlans.filter((p) => p.status === "Active").length;
   const expired = paidPlans.filter((p) => p.status === "Expired").length;
   const withdrawn = paidPlans.filter((p) => p.status === "Withdrawn").length;
   const totalUsd = paidPlans.reduce((sum, p) => sum + p.amountInUsd, 0);
+
+  useEffect(() => {
+    const getUserPoliciesData = async () => {
+      try {
+        const policies = await getUserPolicies();
+        console.log("User Policies:", policies);
+      } catch (error) {
+        console.error("Error fetching user policies:", error);
+      }
+    };
+    getUserPoliciesData();
+  }, []);
 
   const data = {
     labels: ["Active", "Expired", "Withdrawn"],

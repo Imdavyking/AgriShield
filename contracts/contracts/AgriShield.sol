@@ -305,8 +305,42 @@ contract AgriShield is Ownable, ReentrancyGuard {
 
     function getUserPolicies(
         address user
-    ) external view returns (Policy[] memory) {
-        return userPolicies[user];
+    )
+        external
+        view
+        returns (
+            uint256[] memory policyIds,
+            uint256[] memory planIds,
+            uint256[] memory startDates,
+            uint256[] memory endDates,
+            uint256[] memory amounts,
+            bool[] memory withdrawnFlags,
+            uint256[] memory latitude,
+            uint256[] memory longitude
+        )
+    {
+        uint256 length = userPolicies[user].length;
+
+        policyIds = new uint256[](length);
+        planIds = new uint256[](length);
+        startDates = new uint256[](length);
+        endDates = new uint256[](length);
+        amounts = new uint256[](length);
+        withdrawnFlags = new bool[](length);
+        latitude = new uint256[](length);
+        longitude = new uint256[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            Policy memory p = userPolicies[user][i];
+            policyIds[i] = p.policyId;
+            planIds[i] = p.planId;
+            startDates[i] = p.startDate;
+            endDates[i] = p.endDate;
+            amounts[i] = p.amountInUsd;
+            latitude[i] = p.latitude;
+            longitude[i] = p.longitude;
+            withdrawnFlags[i] = p.isWithdrawn;
+        }
     }
 
     function refundPolicy(

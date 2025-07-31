@@ -5,6 +5,7 @@ import {
   AGRICSHIELD_CONTRACT_ADDRESS,
   NATIVE_TOKEN,
   LOCATION_DECIMAL_PLACES,
+  FIAT_DECIMAL_PLACES,
 } from "../utils/constants";
 import agriShieldAbi from "../assets/json/agrishield.json";
 import { erc20Abi } from "viem";
@@ -221,6 +222,47 @@ export const checkUserPlan = async ({ planId }: { planId: string }) => {
   const isPaid = await insuranceContract.userPlanProcessed(planId, userAddress);
   return isPaid;
 };
+export const getUserPolicies = async () => {
+  const insuranceContract = await getAgriShieldContract();
+  const userAddress = await getSigner().then((signer) => signer.getAddress());
+  console.log({ userAddress });
+  try {
+    const [
+      policyIds,
+      planIds,
+      startDates,
+      endDates,
+      amounts,
+      withdrawnFlags,
+      latitude,
+      longitude,
+    ] = await insuranceContract.getUserPolicies(userAddress);
+
+    const paidPlans = policyIds.map((_: any, i: string | number) => ({
+      id: policyIds[i].toNumber?.() ?? Number(policyIds[i]),
+      planId: planIds[i].toNumber?.() ?? Number(planIds[i]),
+      startDate: Number(startDates[i]),
+      endDate: Number(endDates[i]),
+      amountInUsd: Number(amounts[i]),
+      latitude: Number(latitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
+      longitude: Number(longitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
+      status: withdrawnFlags[i]
+        ? "Withdrawn"
+        : getStatus(startDates[i], endDates[i]),
+    }));
+
+    return paidPlans;
+  } catch (error) {
+    console.error("Error fetching user policies:", error);
+    return [];
+  }
+};
+
+const getStatus = (start: number, end: number): "Active" | "Expired" => {
+  const now = Math.floor(Date.now() / 1000);
+  if (now < end) return "Active";
+  return "Expired";
+};
 
 export const getAllInsurance = async () => {
   const insuranceContract = await getAgriShieldContract();
@@ -237,6 +279,31 @@ export const getAllInsurance = async () => {
   console.log("Insurance Plans:", formattedInsuranceList);
 
   return formattedInsuranceList;
+};
+export const createInsurance = async () => {
+  try {
+    const insuranceContract = await getAgriShieldContract();
+    const lagosLat = 65244;
+    const lagosLong = 33792;
+    const _startDate = Math.floor(Date.now() / 1000) + 3000;
+    const oneYearInSeconds = 365 * 24 * 60 * 60;
+    const _endDate = _startDate + oneYearInSeconds;
+    const amountInUsd = 1 * FIAT_DECIMAL_PLACES;
+    const transaction = await insuranceContract.createInsurancePlan(
+      lagosLat,
+      lagosLong,
+      _startDate,
+      _endDate,
+      amountInUsd
+    );
+
+    const receipt = await transaction.wait(1);
+    return `Created plan with: ${receipt!.hash}`;
+  } catch (error: any) {
+    const parsedError = parseContractError(error, agriShieldAbiInterface);
+    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
+    return `${FAILED_KEY}${parsedError ?? error.message}`;
+  }
 };
 
 export const payForInsurance = async ({
