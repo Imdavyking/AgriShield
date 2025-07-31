@@ -699,6 +699,16 @@
         "internalType": "bool[]",
         "name": "withdrawnFlags",
         "type": "bool[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "latitude",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "longitude",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",

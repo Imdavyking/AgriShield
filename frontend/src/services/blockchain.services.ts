@@ -239,8 +239,8 @@ export const getUserPolicies = async () => {
     ] = await insuranceContract.getUserPolicies(userAddress);
 
     const paidPlans = policyIds.map((_: any, i: string | number) => ({
-      id: policyIds[i].toNumber?.() ?? Number(policyIds[i]),
-      planId: planIds[i].toNumber?.() ?? Number(planIds[i]),
+      id: policyIds[i],
+      planId: planIds[i],
       startDate: Number(startDates[i]),
       endDate: Number(endDates[i]),
       amountInUsd: Number(amounts[i]),
