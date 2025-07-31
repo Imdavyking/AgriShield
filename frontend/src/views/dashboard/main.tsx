@@ -5,26 +5,25 @@ import { LOCATION_DECIMAL_PLACES } from "../../utils/constants";
 import { use, useEffect, useState } from "react";
 import { getUserPolicies } from "../../services/blockchain.services";
 import { ellipsify } from "../../utils/ellipsify";
+import { toast } from "react-toastify";
+import Policy from "./policy";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const formatDate = (unix: string | number) =>
-  new Date(+unix * 1000).toLocaleDateString();
-
+type PlanStatus = "Active" | "Expired" | "Withdrawn";
+export interface PaidPlan {
+  id: string;
+  planId: string;
+  latitude: number;
+  longitude: number;
+  startDate: number;
+  endDate: number;
+  amountInUsd: number;
+  status: PlanStatus;
+}
 const DashboardPage = () => {
-  type PlanStatus = "Active" | "Expired" | "Withdrawn";
-
-  interface PaidPlan {
-    id: string;
-    planId: string;
-    latitude: number;
-    longitude: number;
-    startDate: number;
-    endDate: number;
-    amountInUsd: number;
-    status: PlanStatus;
-  }
   const [paidPlans, setPaidPlan] = useState<PaidPlan[]>([]);
+
   const total = paidPlans.length;
   const active = paidPlans.filter((p) => p.status === "Active").length;
   const expired = paidPlans.filter((p) => p.status === "Expired").length;
@@ -96,38 +95,8 @@ const DashboardPage = () => {
 
         {/* Policy Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {paidPlans.map((plan) => (
-            <div
-              key={plan.id}
-              className="bg-white rounded-xl p-5 shadow-lg border-t-4 hover:shadow-xl hover:border-green-500 transition"
-            >
-              <h3 className="text-lg font-bold text-green-800 mb-2">
-                Policy #{ellipsify(plan.id.toString(), 10)}
-              </h3>
-              <p className="text-gray-600 text-sm">
-                <strong>Location:</strong>{" "}
-                {plan.latitude.toFixed(LOCATION_DECIMAL_PLACES)},{" "}
-                {plan.longitude.toFixed(LOCATION_DECIMAL_PLACES)}
-              </p>
-              <p className="text-gray-600 text-sm">
-                <strong>Duration:</strong> {formatDate(plan.startDate)} -{" "}
-                {formatDate(plan.endDate)}
-              </p>
-              <p className="text-gray-600 text-sm">
-                <strong>Amount:</strong> ${plan.amountInUsd}
-              </p>
-              <span
-                className={`inline-block mt-3 px-3 py-1 rounded-full text-xs font-semibold ${
-                  plan.status === "Active"
-                    ? "bg-green-100 text-green-700"
-                    : plan.status === "Expired"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-blue-100 text-blue-700"
-                }`}
-              >
-                {plan.status}
-              </span>
-            </div>
+          {paidPlans.map((plan, i) => (
+            <Policy plan={plan} key={i} />
           ))}
         </div>
       </div>
