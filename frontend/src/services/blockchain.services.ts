@@ -373,7 +373,7 @@ export const refundPolicy = async ({
       throw new Error(`Network response was not ok ${response.statusText}`);
     }
     const data = await response.json();
-    console.log("Flight proof data:", data);
+    console.log("proof data:", data);
 
     const fdcService = new FDCServiceJson();
     const proof = await fdcService.getDataAndStoreProof(data.data);
