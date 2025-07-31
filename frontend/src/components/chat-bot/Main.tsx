@@ -232,7 +232,7 @@ const ChatWithAdminBot = () => {
                     <div
                       className={`${
                         message.sender === "user"
-                          ? "bg-blue-500 text-white"
+                          ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-700"
                       } rounded-lg py-2 px-4 inline-block max-w-full break-words overflow-hidden`}
                     >
