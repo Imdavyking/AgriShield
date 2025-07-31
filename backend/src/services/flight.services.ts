@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { FlightStatusModel } from "../models/flight.status.model";
 import { ethers } from "ethers";
 import { environment } from "../utils/config";
-import flightAbi from "../abis/flight-abi";
+import flightAbi from "../abis/agrishield";
 
 export async function getFlightStatus(flightId: string) {
   const session = await mongoose.startSession();

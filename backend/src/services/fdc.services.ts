@@ -131,45 +131,64 @@ export async function getEVMTransactionAttestation(transactionHash: string) {
   return data;
 }
 
-export async function getJsonAttestation(flightId: string, baseUrl: string) {
-  const apiUrl = `${baseUrl}/api/flight/status/${flightId}`;
+export async function getJsonAttestation(baseUrl: string) {
+  const apiUrl = baseUrl;
 
   console.log("API URL:", apiUrl, "\n");
 
   const postprocessJq = `{
-  flightId: .data.flight_id,
-  status: .data.status,
-  reasonType: (.data.reason_for_delay.type // null),
-  description: (.data.reason_for_delay.description // null)
+  time: .current_weather.time,
+  interval: .current_weather.interval,
+  temperature: .current_weather.temperature,
+  windspeed: .current_weather.windspeed,
+  winddirection: .current_weather.winddirection,
+  isDay: .current_weather.is_day,
+  weathercode: .current_weather.weathercode
 }`;
 
-  const abiSignature = ` {
-    "components": [
-      {
-        "internalType": "uint256",
-        "name": "flightId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "status",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "reasonType",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      }
-    ],
-    "internalType": "struct FlightTicket.DataTransportObject",
-    "name": "dto",
-    "type": "tuple"
-  }`;
+  const abiSignature = `{
+  "components": [
+    {
+      "internalType": "string",
+      "name": "time",
+      "type": "string"
+    },
+    {
+      "internalType": "uint256",
+      "name": "interval",
+      "type": "uint256"
+    },
+    {
+      "internalType": "float",
+      "name": "temperature",
+      "type": "float"
+    },
+    {
+      "internalType": "float",
+      "name": "windspeed",
+      "type": "float"
+    },
+    {
+      "internalType": "uint256",
+      "name": "winddirection",
+      "type": "uint256"
+    },
+    {
+      "internalType": "uint8",
+      "name": "isDay",
+      "type": "uint8"
+    },
+    {
+      "internalType": "uint256",
+      "name": "weathercode",
+      "type": "uint256"
+    }
+  ],
+  "internalType": "struct Weather.CurrentWeather",
+  "name": "weather",
+  "type": "tuple"
+}`;
+
   const data = await prepareAttestationRequestJson(
     apiUrl,
     postprocessJq,

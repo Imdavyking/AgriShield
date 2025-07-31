@@ -86,10 +86,13 @@ contract AgriShield is Ownable, ReentrancyGuard {
     }
 
     struct DataTransportObject {
-        uint256 planId;
-        string status;
-        string reasonType;
-        string description;
+        string time;
+        uint256 interval;
+        int256 temperature;
+        int256 windspeed;
+        uint256 winddirection;
+        uint8 isDay;
+        uint256 weathercode;
     }
 
     event InsurancePlanCreated(
@@ -122,7 +125,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
         uint256 startDate,
         uint256 endDate,
         uint256 timestamp,
-        string weatherCondition,
+        int256 temperature,
         string refundStatus,
         uint256 amountInUsd,
         address token,
@@ -362,9 +365,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
 
         _validateUrlPrefix(_proof.data.requestBody.url);
 
-        if (dto.planId != policy.planId)
-            revert AgriShield_InsuranceNotSameAsData();
-        if (keccak256(bytes(dto.status)) == keccak256(bytes("Normal"))) {
+        if (dto.temperature < 20) {
             revert AgriShield__WeatherConditionNotMet();
         }
 
@@ -395,7 +396,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             policy.startDate,
             policy.endDate,
             block.timestamp,
-            dto.description,
+            dto.temperature,
             "Refunded",
             policy.amountInUsd,
             policy.token,
@@ -434,12 +435,6 @@ contract AgriShield is Ownable, ReentrancyGuard {
 
         _validateUrlPrefix(_proof.data.requestBody.url);
 
-        if (dto.planId != policy.planId)
-            revert AgriShield_InsuranceNotSameAsData();
-        if (keccak256(bytes(dto.status)) == keccak256(bytes("Normal"))) {
-            revert AgriShield__WeatherConditionNotMet();
-        }
-
         policies[policyId].isWithdrawn = true;
 
         if (policy.token == NATIVE_TOKEN) {
@@ -457,7 +452,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             policy.startDate,
             policy.endDate,
             block.timestamp,
-            dto.description,
+            dto.temperature,
             "Refunded",
             policy.amountInUsd,
             policy.token,
@@ -498,7 +493,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
             policy.startDate,
             policy.endDate,
             block.timestamp,
-            policy.weatherCondition,
+            0,
             policy.refundStatus,
             policy.amountInUsd,
             policy.token,
