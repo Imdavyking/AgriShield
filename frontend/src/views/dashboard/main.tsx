@@ -2,51 +2,29 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 import { LOCATION_DECIMAL_PLACES } from "../../utils/constants";
-import { useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { getUserPolicies } from "../../services/blockchain.services";
+import { ellipsify } from "../../utils/ellipsify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const paidPlans = [
-  {
-    id: 101,
-    planId: 1,
-    latitude: 35.6895,
-    longitude: 139.6917,
-    startDate: 1720000000,
-    endDate: 1750000000,
-    amountInUsd: 400,
-    token: "USDC",
-    status: "Active",
-  },
-  {
-    id: 102,
-    planId: 2,
-    latitude: -1.2921,
-    longitude: 36.8219,
-    startDate: 1700000000,
-    endDate: 1730000000,
-    amountInUsd: 600,
-    token: "ETH",
-    status: "Expired",
-  },
-  {
-    id: 103,
-    planId: 3,
-    latitude: 51.5074,
-    longitude: -0.1278,
-    startDate: 1725000000,
-    endDate: 1755000000,
-    amountInUsd: 300,
-    token: "DAI",
-    status: "Withdrawn",
-  },
-];
 
 const formatDate = (unix: string | number) =>
   new Date(+unix * 1000).toLocaleDateString();
 
 const DashboardPage = () => {
+  type PlanStatus = "Active" | "Expired" | "Withdrawn";
+
+  interface PaidPlan {
+    id: string;
+    planId: string;
+    latitude: number;
+    longitude: number;
+    startDate: number;
+    endDate: number;
+    amountInUsd: number;
+    status: PlanStatus;
+  }
+  const [paidPlans, setPaidPlan] = useState<PaidPlan[]>([]);
   const total = paidPlans.length;
   const active = paidPlans.filter((p) => p.status === "Active").length;
   const expired = paidPlans.filter((p) => p.status === "Expired").length;
@@ -58,6 +36,7 @@ const DashboardPage = () => {
       try {
         const policies = await getUserPolicies();
         console.log("User Policies:", policies);
+        setPaidPlan(policies);
       } catch (error) {
         console.error("Error fetching user policies:", error);
       }
@@ -123,7 +102,7 @@ const DashboardPage = () => {
               className="bg-white rounded-xl p-5 shadow-lg border-t-4 hover:shadow-xl hover:border-green-500 transition"
             >
               <h3 className="text-lg font-bold text-green-800 mb-2">
-                Policy #{plan.id}
+                Policy #{ellipsify(plan.id.toString(), 10)}
               </h3>
               <p className="text-gray-600 text-sm">
                 <strong>Location:</strong>{" "}
@@ -135,7 +114,7 @@ const DashboardPage = () => {
                 {formatDate(plan.endDate)}
               </p>
               <p className="text-gray-600 text-sm">
-                <strong>Amount:</strong> ${plan.amountInUsd} {plan.token}
+                <strong>Amount:</strong> ${plan.amountInUsd}
               </p>
               <span
                 className={`inline-block mt-3 px-3 py-1 rounded-full text-xs font-semibold ${

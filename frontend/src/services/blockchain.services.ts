@@ -243,7 +243,7 @@ export const getUserPolicies = async () => {
       planId: planIds[i],
       startDate: Number(startDates[i]),
       endDate: Number(endDates[i]),
-      amountInUsd: Number(amounts[i]),
+      amountInUsd: Number(amounts[i]) / FIAT_DECIMAL_PLACES,
       latitude: Number(latitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
       longitude: Number(longitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
       status: withdrawnFlags[i]
