@@ -51,6 +51,9 @@ export class FDCServiceJson implements FDCService {
     // We check every 10 seconds if the round is finalized
     const relay = await this.getRelay();
     while (!(await relay.isFinalized(200, roundId))) {
+      console.log(
+        `Round ${roundId} is not finalized yet, waiting for 30 seconds...`
+      );
       await this.sleep(30000);
     }
     console.log("Round finalized!\n");

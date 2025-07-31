@@ -4,6 +4,10 @@ import { ellipsify } from "../../utils/ellipsify";
 import { PaidPlan } from "./main";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import {
+  refundPolicy,
+  rethrowFailedResponse,
+} from "../../services/blockchain.services";
 
 const formatDate = (unix: string | number) =>
   new Date(+unix * 1000).toLocaleDateString();
@@ -13,6 +17,7 @@ const Policy = ({ plan }: { plan: PaidPlan }) => {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [isRefunding, setIsRefunding] = useState(false);
 
   const fetchWeather = async (lat: number, lon: number) => {
     try {
@@ -40,6 +45,28 @@ const Policy = ({ plan }: { plan: PaidPlan }) => {
       setWeatherData(data);
     } catch (err) {
       console.error("Weather fetch failed", err);
+    }
+  };
+
+  const handleRefund = async () => {
+    if (!selectedPlan) return;
+    try {
+      setIsRefunding(true);
+      const response = await refundPolicy({
+        policyId: selectedPlan.id,
+        lat: selectedPlan.latitude.toString(),
+        long: selectedPlan.longitude.toString(),
+      });
+      rethrowFailedResponse(response);
+      toast.success("Refund processed successfully!");
+      setShowModal(false);
+    } catch (error) {
+      console.error("Refund error:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Refund failed unexpectedly"
+      );
+    } finally {
+      setIsRefunding(false);
     }
   };
   return (
@@ -109,6 +136,17 @@ const Policy = ({ plan }: { plan: PaidPlan }) => {
                   <strong>Precipitation:</strong>{" "}
                   {weatherData.precipitation ?? "N/A"} mm
                 </p>
+                <button
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"
+                  onClick={handleRefund}
+                  disabled={isRefunding}
+                >
+                  {isRefunding ? (
+                    <FaSpinner className="animate-spin" />
+                  ) : (
+                    "Refund if Temp > 20ᴼC"
+                  )}
+                </button>
               </div>
             ) : (
               <p>Loading weather data...</p>

@@ -10,6 +10,7 @@ import {
 } from "../utils/constants";
 import agriShieldAbi from "../assets/json/agrishield.json";
 import { erc20Abi } from "viem";
+import { FDCServiceJson } from "./fdc.json.services";
 
 const agriShieldAbiInterface = new ethers.Interface(agriShieldAbi);
 const erc20AbiInterface = new ethers.Interface(erc20Abi);
@@ -354,14 +355,41 @@ export const payForInsurance = async ({
   }
 };
 
-export const getJsonProof = async ({
+export const refundPolicy = async ({
+  policyId,
   lat,
   long,
 }: {
+  policyId: string;
   lat: string;
   long: string;
 }) => {
-  const res = await fetch(`${BACKEND_URL}/api/fdc/json-proof/${lat}/${long}`);
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/api/fdc/json-proof/${lat}/${long}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log("Flight proof data:", data);
+
+    const fdcService = new FDCServiceJson();
+    const proof = await fdcService.getDataAndStoreProof(data.data);
+
+    console.log("proof:", proof);
+    const insuranceContract = await getAgriShieldContract();
+
+    const transaction = await insuranceContract.refundPolicy(policyId, proof);
+
+    const receipt = await transaction.wait(1);
+    return `Paid Insurance with: ${receipt!.hash}`;
+  } catch (error: any) {
+    const parsedError = parseContractError(error, agriShieldAbiInterface);
+    console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
+    return `${FAILED_KEY}${parsedError ?? error.message}`;
+  }
 };
 
 export const rethrowFailedResponse = (response: string) => {
@@ -370,4 +398,3 @@ export const rethrowFailedResponse = (response: string) => {
   }
   return response;
 };
-
