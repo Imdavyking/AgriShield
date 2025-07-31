@@ -3,7 +3,6 @@ import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import {
   checkUserPlan,
-  getSigner,
   payForInsurance,
   rethrowFailedResponse,
 } from "../../services/blockchain.services";

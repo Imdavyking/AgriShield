@@ -1,11 +1,7 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { Link } from "react-router-dom";
-import { LOCATION_DECIMAL_PLACES } from "../../utils/constants";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserPolicies } from "../../services/blockchain.services";
-import { ellipsify } from "../../utils/ellipsify";
-import { toast } from "react-toastify";
 import Policy from "./policy";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
