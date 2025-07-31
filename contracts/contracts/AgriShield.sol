@@ -125,7 +125,7 @@ contract AgriShield is Ownable, ReentrancyGuard {
         uint256 startDate,
         uint256 endDate,
         uint256 timestamp,
-        int256 temperature,
+        uint256 temperature,
         string refundStatus,
         uint256 amountInUsd,
         address token,
