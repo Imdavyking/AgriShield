@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { getAllInsurance } from "../../services/blockchain.services";
+import {
+  createInsurance,
+  getAllInsurance,
+} from "../../services/blockchain.services";
 import { FaSpinner } from "react-icons/fa";
 import Plan from "./plan";
 
 export default function PlansPage() {
   const [plans, setPlans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreatingPlan, setCreatingPlan] = useState(false);
   useEffect(() => {
     const fetchPlans = async () => {
       try {
@@ -21,6 +25,16 @@ export default function PlansPage() {
 
     fetchPlans();
   }, []);
+
+  const createIplan = async () => {
+    try {
+      setCreatingPlan(true);
+      await createInsurance();
+    } catch (error) {
+    } finally {
+      setCreatingPlan(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-green-50 py-10 px-4">
       <div className="max-w-6xl mx-auto">
@@ -34,6 +48,21 @@ export default function PlansPage() {
               <p className="text-gray-600 mt-4">Loading plans...</p>
             </div>
           )}
+
+          {!isLoading && plans.length == 0 && (
+            <button
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"
+              onClick={createIplan}
+              disabled={isCreatingPlan}
+            >
+              {isCreatingPlan ? (
+                <FaSpinner className="animate-spin" />
+              ) : (
+                "Create Plan"
+              )}
+            </button>
+          )}
+
           {plans.map((plan: any, index) => (
             <Plan plan={plan} key={index} />
           ))}
