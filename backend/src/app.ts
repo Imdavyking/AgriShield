@@ -8,7 +8,6 @@ io.emit("connection", (data: any) => {
 });
 import server from "./utils/create.server";
 import { connectDB } from "./database/connection";
-import { getJsonAttestation } from "./services/fdc.services";
 
 dotenv.config();
 

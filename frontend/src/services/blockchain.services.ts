@@ -6,6 +6,7 @@ import {
   NATIVE_TOKEN,
   LOCATION_DECIMAL_PLACES,
   FIAT_DECIMAL_PLACES,
+  BACKEND_URL,
 } from "../utils/constants";
 import agriShieldAbi from "../assets/json/agrishield.json";
 import { erc20Abi } from "viem";
@@ -351,6 +352,16 @@ export const payForInsurance = async ({
     console.error(`${FAILED_KEY}${parsedError ?? error.message}`);
     return `${FAILED_KEY}${parsedError ?? error.message}`;
   }
+};
+
+export const getJsonProof = async ({
+  lat,
+  long,
+}: {
+  lat: string;
+  long: string;
+}) => {
+  const res = await fetch(`${BACKEND_URL}/json-proof/${lat}/${long}`);
 };
 
 export const rethrowFailedResponse = (response: string) => {
