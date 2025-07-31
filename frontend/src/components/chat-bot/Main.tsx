@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { useConfirmationStore } from "../../agent/prompt";
 
 const ChatWithAdminBot = () => {
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [isChatboxOpen, setIsChatboxOpen] = useState(false);
   const { prompt, confirm, cancel } = useConfirmationStore();
   const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -24,6 +25,19 @@ const ChatWithAdminBot = () => {
 
   const [userInput, setUserInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = (reader.result as string).split(",")[1]; // remove prefix
+      setImageBase64(base64String);
+      toast.success("✅ Image attached.");
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     if (prompt) {
@@ -106,7 +120,12 @@ const ChatWithAdminBot = () => {
 
       try {
         setIsProcessing(true);
-        const { results } = await agent.solveTask(userInput);
+        const { results } = await agent.solveTask(
+          userInput,
+          imageBase64 ?? undefined
+        );
+
+        setImageBase64(null);
 
         respondToUser(results);
       } catch (error: any) {
@@ -246,18 +265,31 @@ const ChatWithAdminBot = () => {
             </div>
 
             {/* Chat Input */}
-            <div className="p-4 border-t flex">
+            <div className="p-4 border-t flex items-center gap-2">
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                id="image-upload"
+                onChange={handleImageUpload}
+              />
+              <label
+                htmlFor="image-upload"
+                className="bg-gray-200 text-gray-800 px-3 py-2 rounded cursor-pointer hover:bg-gray-300"
+              >
+                📷
+              </label>
               <input
                 type="text"
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={handleInputKeyPress}
                 placeholder="Type a message"
-                className="w-full px-3 py-2 border text-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="w-full px-3 py-2 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
               />
               <button
                 onClick={handleSend}
-                className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-300 transition duration-300 cursor-pointer"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300"
                 disabled={isProcessing}
               >
                 {isProcessing ? (

@@ -29,11 +29,15 @@ export class AIAgent {
       .showPrompt(toolCall.name, toolCall.args);
   }
 
-  public async solveTask(userPrompt: string): Promise<any> {
+  public async solveTask(
+    userPrompt: string,
+    imageBase64?: string
+  ): Promise<any> {
     const userAddress = await walletAddress();
     const action = await callLLMApi({
       userPrompt,
       userAddress,
+      imageBase64,
     });
 
     const results: string[] = [];

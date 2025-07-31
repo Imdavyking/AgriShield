@@ -3,9 +3,11 @@ import { BACKEND_URL } from "../utils/constants";
 export const callLLMApi = async ({
   userPrompt,
   userAddress,
+  imageBase64,
 }: {
   userPrompt: string;
   userAddress: string;
+  imageBase64?: string;
 }) => {
   const response = await fetch(`${BACKEND_URL}/api/llm/agent`, {
     method: "POST",

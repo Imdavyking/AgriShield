@@ -9,7 +9,7 @@ dotenv.config();
  */
 export const processLLMRequest = async (req: Request, res: Response) => {
   try {
-    const { userPrompt, userAddress } = req.body;
+    const { userPrompt, userAddress, imageBase64 } = req.body;
 
     if (!userPrompt) {
       res.status(400).json({
@@ -25,7 +25,11 @@ export const processLLMRequest = async (req: Request, res: Response) => {
       return;
     }
 
-    const generateActions = await runAIAgent({ userPrompt, userAddress });
+    const generateActions = await runAIAgent({
+      userPrompt,
+      userAddress,
+      imageBase64,
+    });
 
     res.json(generateActions);
   } catch (error) {
