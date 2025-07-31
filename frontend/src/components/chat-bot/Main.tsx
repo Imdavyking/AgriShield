@@ -120,6 +120,7 @@ const ChatWithAdminBot = () => {
 
       try {
         setIsProcessing(true);
+
         const { results } = await agent.solveTask(
           userInput,
           imageBase64 ?? undefined
@@ -265,6 +266,16 @@ const ChatWithAdminBot = () => {
             </div>
 
             {/* Chat Input */}
+            {imageBase64 && (
+              <div className="px-4 pt-2">
+                <p className="text-xs text-gray-500 mb-1">📎 Image attached:</p>
+                <img
+                  src={`data:image/png;base64,${imageBase64}`}
+                  alt="Preview"
+                  className="max-h-32 rounded border"
+                />
+              </div>
+            )}
             <div className="p-4 border-t flex items-center gap-2">
               <input
                 type="file"

@@ -15,7 +15,7 @@ export const callLLMApi = async ({
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ userPrompt, userAddress }),
+    body: JSON.stringify({ userPrompt, userAddress, imageBase64 }),
   });
   if (!response.ok) {
     throw new Error("Failed to fetch llm response");
