@@ -246,9 +246,7 @@ export const getUserPolicies = async () => {
       amountInUsd: Number(amounts[i]) / FIAT_DECIMAL_PLACES,
       latitude: Number(latitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
       longitude: Number(longitude[i]) / 10 ** LOCATION_DECIMAL_PLACES,
-      status: withdrawnFlags[i]
-        ? "Withdrawn"
-        : getStatus(startDates[i], endDates[i]),
+      status: withdrawnFlags[i] ? "Withdrawn" : getStatus(endDates[i]),
     }));
 
     return paidPlans;
@@ -258,7 +256,7 @@ export const getUserPolicies = async () => {
   }
 };
 
-const getStatus = (start: number, end: number): "Active" | "Expired" => {
+const getStatus = (end: number): "Active" | "Expired" => {
   const now = Math.floor(Date.now() / 1000);
   if (now < end) return "Active";
   return "Expired";
